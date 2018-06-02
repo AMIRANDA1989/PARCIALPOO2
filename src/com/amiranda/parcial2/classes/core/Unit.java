@@ -11,14 +11,16 @@ package com.amiranda.parcial2.classes.core;
  */
 public class Unit {
     private int hitpoints;
+    private int attackPoints;
     private int buildTime;
     private int successRate;
     private int rawMaterialsCost;
     private int energyCost;
     private int moneyCost;
 
-    public Unit(int hitpoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost) {
+    public Unit(int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost) {
         this.hitpoints = hitpoints;
+        this.attackPoints = attackPoints;
         this.buildTime = buildTime;
         this.successRate = successRate;
         this.rawMaterialsCost = rawMaterialsCost;
@@ -72,6 +74,14 @@ public class Unit {
 
     public void setMoneyCost(int moneyCost) {
         this.moneyCost = moneyCost;
+    }
+
+    public int getAttackPoints() {
+        return attackPoints;
+    }
+
+    public void setAttackPoints(int attackPoints) {
+        this.attackPoints = attackPoints;
     }
     
     

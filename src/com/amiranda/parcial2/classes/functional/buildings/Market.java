@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.amiranda.parcial2.classes.functional;
+package com.amiranda.parcial2.classes.functional.buildings;
 
-import com.amiranda.parcial2.classes.core.Unit;
+import com.amiranda.parcial2.classes.core.Building;
 
 /**
  *
  * @author allan
  */
-public class squad extends Unit{
+public class Market extends Building{
     private String name;
 
-    public squad(String name, int hitpoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost) {
-        super(hitpoints, buildTime, successRate, rawMaterialsCost, energyCost, moneyCost);
+    public Market(String name, int hitpoints, int buildTime, int capacity, int productionPerTurn) {
+        super(hitpoints, buildTime, capacity, productionPerTurn);
         this.name = name;
     }
 
@@ -26,6 +26,7 @@ public class squad extends Unit{
     public void setName(String name) {
         this.name = name;
     }
+
     
     
 }

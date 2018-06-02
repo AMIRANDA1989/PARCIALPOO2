@@ -12,10 +12,14 @@ package com.amiranda.parcial2.classes.core;
 public class Building {
     private int hitpoints;
     private int buildTime;
+    private int capacity;
+    private int productionPerTurn;
 
-    public Building(int hitpoints, int buildTime) {
+    public Building(int hitpoints, int buildTime, int capacity, int productionPerTurn) {
         this.hitpoints = hitpoints;
         this.buildTime = buildTime;
+        this.capacity = capacity;
+        this.productionPerTurn = productionPerTurn;
     }
 
     public int getHitpoints() {
@@ -32,6 +36,22 @@ public class Building {
 
     public void setBuildTime(int buildTime) {
         this.buildTime = buildTime;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getProductionPerTurn() {
+        return productionPerTurn;
+    }
+
+    public void setProductionPerTurn(int productionPerTurn) {
+        this.productionPerTurn = productionPerTurn;
     }
     
     
