@@ -12,9 +12,17 @@ package com.amiranda.engine.interfaces;
  * en donde el usuario tenga que interactuar con el sistema.
  */
 public interface UserInteractions {
+
+    public final int INFO_MESSAGE = 1;
+    public final int WARNING_MESSAGE = 2;
+    public final int ERROR_MESSAGE = 3;
+    public final int ALERT_MESSAGE = 4;
+    
     public boolean confirmAction();
         
     public int getPlayerRaza(int numPlayer);
     
     public String setPlayerName();
+    
+    public void showMessage(int messageType, String message);
 }

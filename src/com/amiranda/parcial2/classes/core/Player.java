@@ -23,6 +23,10 @@ public class Player {
     private int raceCode; //La raza del jugador se manejara por codigo dentro de la clase del jugador
     
     //Edificios que tiene el jugador
+    private int factoryQty;
+    private int marketQty;
+    private int powerMineQty;
+    private int militaryBuildingQty;
     private Factory playerBaseFactory; //fabrica base del jugador
     private Market playerBaseMarket; //mercado base
     private PowerMine playerBasePowerMine; //mina base
@@ -32,6 +36,10 @@ public class Player {
     private ArrayList<Market> markets = new ArrayList();
     private ArrayList<PowerMine> mines = new ArrayList();
     private ArrayList<MilitaryBuilding> mbs = new ArrayList();
+    private ArrayList<Factory> factConstruction = new ArrayList();
+    private ArrayList<Market> marketConstruction = new ArrayList();
+    private ArrayList<PowerMine> mineConstruction = new ArrayList();
+    private ArrayList<MilitaryBuilding> mbsConstruction = new ArrayList();
     
     //Unidades que tiene el jugador
     private Squad playerBaseSquad; //Unidad básica que manejará el jugador
@@ -46,6 +54,10 @@ public class Player {
         this.name = name;
         this.raceCode = raceCode;
         this.cc = cc;
+        this.factoryQty = 0;
+        this.marketQty = 0;
+        this.militaryBuildingQty = 0;
+        this.powerMineQty = 0;
     }
 
     public String getName() {
@@ -182,6 +194,70 @@ public class Player {
 
     public void setPlayerBaseMilitaryBuilding(MilitaryBuilding playerBaseMilitaryBuilding) {
         this.playerBaseMilitaryBuilding = playerBaseMilitaryBuilding;
+    }
+
+    public int getFactoryQty() {
+        return factoryQty;
+    }
+
+    public void setFactoryQty(int factoryQty) {
+        this.factoryQty = factoryQty;
+    }
+
+    public int getMarketQty() {
+        return marketQty;
+    }
+
+    public void setMarketQty(int marketQty) {
+        this.marketQty = marketQty;
+    }
+
+    public int getPowerMineQty() {
+        return powerMineQty;
+    }
+
+    public void setPowerMineQty(int powerMineQty) {
+        this.powerMineQty = powerMineQty;
+    }
+
+    public int getMilitaryBuildingQty() {
+        return militaryBuildingQty;
+    }
+
+    public void setMilitaryBuildingQty(int militaryBuildingQty) {
+        this.militaryBuildingQty = militaryBuildingQty;
+    }
+
+    public ArrayList<Factory> getFactConstruction() {
+        return factConstruction;
+    }
+
+    public void setFactConstruction(ArrayList<Factory> factConstruction) {
+        this.factConstruction = factConstruction;
+    }
+
+    public ArrayList<Market> getMarketConstruction() {
+        return marketConstruction;
+    }
+
+    public void setMarketConstruction(ArrayList<Market> marketConstruction) {
+        this.marketConstruction = marketConstruction;
+    }
+
+    public ArrayList<PowerMine> getMineConstruction() {
+        return mineConstruction;
+    }
+
+    public void setMineConstruction(ArrayList<PowerMine> mineConstruction) {
+        this.mineConstruction = mineConstruction;
+    }
+
+    public ArrayList<MilitaryBuilding> getMbsConstruction() {
+        return mbsConstruction;
+    }
+
+    public void setMbsConstruction(ArrayList<MilitaryBuilding> mbsConstruction) {
+        this.mbsConstruction = mbsConstruction;
     }
     
     

@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class UserInteractionsImpl implements UserInteractions{
     Scanner in = new Scanner(System.in);
     
+    
     @Override
     public int getPlayerRaza(int numPlayer) {
         boolean validator = true;
@@ -81,6 +82,31 @@ public class UserInteractionsImpl implements UserInteractions{
             confirm = confirmAction();
         }
         return name;
+    }
+
+    @Override
+    public void showMessage(int messageType, String message) {
+        switch(messageType){
+            case(1)://INFO_MESSAGE
+                System.out.println("");
+                System.out.println("[INFO] - " + message);
+                break;
+            
+            case(2): //WARNING_MESSAGE
+                System.out.println("");
+                System.out.println("*ADVERTENCIA* - " + message);
+                break;
+                
+            case(3): //ERROR_MESSAGE
+                System.out.println("***");
+                System.out.println("<ERROR> - " + message);
+                System.out.println("***");
+                break;
+                
+            case(4)://ALERT_MESSAGE
+                System.out.println("");
+                System.out.println("!!ALERTA!! - " + message);
+        }
     }
     
 }

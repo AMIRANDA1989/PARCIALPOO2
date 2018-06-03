@@ -5,10 +5,18 @@
  */
 package com.amiranda.engine.interfaces;
 
+import com.amiranda.parcial2.classes.functional.buildings.Factory;
+import java.util.ArrayList;
+
 /**
  *
  * @author allan
  */
 public interface BuildingInteractions {
+    /*Metodos para las fabricas*/
+    public ArrayList<Factory> factoryQueueMaintenance(ArrayList<Factory> colaProd);
+    public ArrayList<Factory> factoryQueueProduction(ArrayList<Factory> colaProd, ArrayList<Factory> playerFactories, Factory playerBaseFactory);
+    public ArrayList<Factory> factoryCleanQueue(ArrayList<Factory> colaProd);
+    public ArrayList<Factory> factoryMaintenance(ArrayList<Factory> playerFactories);
     
 }
