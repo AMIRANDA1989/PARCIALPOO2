@@ -19,6 +19,7 @@ public class Squad extends Unit{
         this.name = name;
     }
 
+
     public String getName() {
         return name;
     }

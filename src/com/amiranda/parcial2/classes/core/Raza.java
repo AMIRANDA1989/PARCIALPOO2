@@ -54,4 +54,7 @@ public abstract class Raza {
    
     //modificador de precio de recursos
     public abstract int resourcePriceModifier(int resource);
+    
+    //modificador de factor de exito
+    public abstract int successRateModifier(int success);
 }

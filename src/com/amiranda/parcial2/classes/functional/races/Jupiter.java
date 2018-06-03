@@ -73,5 +73,10 @@ public class Jupiter extends Raza{
     public int resourcePriceModifier(int resource) {
         return resource;
     }
+
+    @Override
+    public int successRateModifier(int success) {
+        return success;
+    }
     
 }

@@ -23,6 +23,10 @@ public class Player {
     private int raceCode; //La raza del jugador se manejara por codigo dentro de la clase del jugador
     
     //Edificios que tiene el jugador
+    private Factory playerBaseFactory; //fabrica base del jugador
+    private Market playerBaseMarket; //mercado base
+    private PowerMine playerBasePowerMine; //mina base
+    private MilitaryBuilding playerBaseMilitaryBuilding; //base...em...base
     private ComandCenter cc; //centro de mando del jugador
     private ArrayList<Factory> factories = new ArrayList();
     private ArrayList<Market> markets = new ArrayList();
@@ -30,12 +34,12 @@ public class Player {
     private ArrayList<MilitaryBuilding> mbs = new ArrayList();
     
     //Unidades que tiene el jugador
+    private Squad playerBaseSquad; //Unidad básica que manejará el jugador
+    private Specialist playerBaseSpecialist; //especialista básico que manejará el jugador
     private ArrayList<Squad> squads = new ArrayList();
     private ArrayList<Specialist> specialist = new ArrayList();  
     private ArrayList<Squad> deployedSquads = new ArrayList();
     private ArrayList<Specialist> deployedSpecialist = new ArrayList();
-    
-    //cualidades de la raza que eligio el jugador
     
 
     public Player(String name, int raceCode, ComandCenter cc) {
@@ -130,6 +134,54 @@ public class Player {
 
     public void setDeployedSpecialist(ArrayList<Specialist> deployedSpecialist) {
         this.deployedSpecialist = deployedSpecialist;
+    }
+
+    public Squad getPlayerBaseSquad() {
+        return playerBaseSquad;
+    }
+
+    public void setPlayerBaseSquad(Squad playerBaseSquad) {
+        this.playerBaseSquad = playerBaseSquad;
+    }
+
+    public Specialist getPlayerBaseSpecialist() {
+        return playerBaseSpecialist;
+    }
+
+    public void setPlayerBaseSpecialist(Specialist playerBaseSpecialist) {
+        this.playerBaseSpecialist = playerBaseSpecialist;
+    }
+
+    public Factory getPlayerBaseFactory() {
+        return playerBaseFactory;
+    }
+
+    public void setPlayerBaseFactory(Factory playerBaseFactory) {
+        this.playerBaseFactory = playerBaseFactory;
+    }
+
+    public Market getPlayerBaseMarket() {
+        return playerBaseMarket;
+    }
+
+    public void setPlayerBaseMarket(Market playerBaseMarket) {
+        this.playerBaseMarket = playerBaseMarket;
+    }
+
+    public PowerMine getPlayerBasePowerMine() {
+        return playerBasePowerMine;
+    }
+
+    public void setPlayerBasePowerMine(PowerMine playerBasePowerMine) {
+        this.playerBasePowerMine = playerBasePowerMine;
+    }
+
+    public MilitaryBuilding getPlayerBaseMilitaryBuilding() {
+        return playerBaseMilitaryBuilding;
+    }
+
+    public void setPlayerBaseMilitaryBuilding(MilitaryBuilding playerBaseMilitaryBuilding) {
+        this.playerBaseMilitaryBuilding = playerBaseMilitaryBuilding;
     }
     
     

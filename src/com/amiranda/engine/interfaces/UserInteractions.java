@@ -8,7 +8,13 @@ package com.amiranda.engine.interfaces;
 /**
  *
  * @author allan
+ * La interfaz UserInteractions es la que maneja todas las funciones
+ * en donde el usuario tenga que interactuar con el sistema.
  */
 public interface UserInteractions {
+    public boolean confirmAction();
+        
+    public int getPlayerRaza(int numPlayer);
     
+    public String setPlayerName();
 }

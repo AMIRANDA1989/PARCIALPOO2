@@ -5,6 +5,8 @@
  */
 package com.amiranda.parcial2;
 
+import com.amiranda.engine.Engine;
+
 /**
  *
  * @author allan
@@ -16,6 +18,8 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Engine game = new Engine();
+        game.initEngine();
     }
     
 }

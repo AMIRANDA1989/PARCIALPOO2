@@ -29,7 +29,7 @@ public class Invaders extends Raza{
         System.out.println("CUALIDADES ESPECIALES");
         System.out.println("DEVORADORES: Los invasores son criaturas masivas, sedientas de sangre y dispuestas a conquistar todo terreno donde coloquen sus pies");
         System.out.println("La humanidad ha encontrado a su depredador natural");
-        System.out.println("- Los escuadrones y especialistas de los invasores tienen 20 puntos mas de ataque y 50 mas de vida");
+        System.out.println("- Los escuadrones y especialistas de los invasores tienen 30 puntos mas de ataque y 50 mas de vida");
         System.out.println("- Los escuadrones y especialistas invasores tardan 1 turno mas en fabricar y cuestan 100 de energia y materia prima mas");
     }
 
@@ -70,7 +70,12 @@ public class Invaders extends Raza{
 
     @Override
     public int soldierDamageModifier(int damage) {
-        return damage + 20;
+        return damage + 30;
+    }
+
+    @Override
+    public int successRateModifier(int success) {
+        return success;
     }
     
 }

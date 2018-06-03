@@ -74,4 +74,9 @@ public class NWO extends Raza{
     public int soldierDamageModifier(int damage) {
         return damage;
     }
+
+    @Override
+    public int successRateModifier(int success) {
+        return success;
+    }
 }
