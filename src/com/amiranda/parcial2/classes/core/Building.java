@@ -14,13 +14,37 @@ public class Building {
     private int buildTime;
     private int capacity;
     private int productionPerTurn;
+    private int contents;
+    private int moneyPrice;
+    private int energyPrice;
 
-    public Building(int hitpoints, int buildTime, int capacity, int productionPerTurn) {
+    public Building(int hitpoints, int buildTime, int capacity, int productionPerTurn, int contents, int moneyPrice, int energyPrice) {
         this.hitpoints = hitpoints;
         this.buildTime = buildTime;
         this.capacity = capacity;
         this.productionPerTurn = productionPerTurn;
+        this.contents = contents;
+        this.moneyPrice = moneyPrice;
+        this.energyPrice = energyPrice;
     }
+
+    public int getMoneyPrice() {
+        return moneyPrice;
+    }
+
+    public void setMoneyPrice(int moneyPrice) {
+        this.moneyPrice = moneyPrice;
+    }
+
+    public int getEnergyPrice() {
+        return energyPrice;
+    }
+
+    public void setEnergyPrice(int energyPrice) {
+        this.energyPrice = energyPrice;
+    }
+
+    
 
     public int getHitpoints() {
         return hitpoints;
@@ -52,6 +76,14 @@ public class Building {
 
     public void setProductionPerTurn(int productionPerTurn) {
         this.productionPerTurn = productionPerTurn;
+    }
+
+    public int getContents() {
+        return contents;
+    }
+
+    public void setContents(int contents) {
+        this.contents = contents;
     }
     
     

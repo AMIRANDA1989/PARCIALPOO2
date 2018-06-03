@@ -14,12 +14,10 @@ import com.amiranda.parcial2.classes.core.Building;
 public class PowerMine extends Building{
     String nombre;
 
-    public PowerMine(String nombre, int hitpoints, int buildTime, int capacity, int productionPerTurn) {
-        super(hitpoints, buildTime, capacity, productionPerTurn);
+    public PowerMine(String nombre, int hitpoints, int buildTime, int capacity, int productionPerTurn, int contents, int moneyPrice, int energyPrice) {
+        super(hitpoints, buildTime, capacity, productionPerTurn, contents, moneyPrice, energyPrice);
         this.nombre = nombre;
-    }
-
-    
+    }    
 
     public String getNombre() {
         return nombre;

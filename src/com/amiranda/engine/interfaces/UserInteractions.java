@@ -5,6 +5,13 @@
  */
 package com.amiranda.engine.interfaces;
 
+import com.amiranda.parcial2.classes.core.Player;
+import com.amiranda.parcial2.classes.functional.buildings.Factory;
+import com.amiranda.parcial2.classes.functional.buildings.Market;
+import com.amiranda.parcial2.classes.functional.buildings.MilitaryBuilding;
+import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
+import java.util.ArrayList;
+
 /**
  *
  * @author allan
@@ -25,4 +32,14 @@ public interface UserInteractions {
     public String setPlayerName();
     
     public void showMessage(int messageType, String message);
+    
+    public int mainMenu(Player activePlayer);
+    
+    public int factoryMenu();
+    
+    public int marketMenu();
+    
+    public int powerMineMenu();
+    
+    public int militaryBaseMenu();
 }

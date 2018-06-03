@@ -17,6 +17,26 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
     UserInteractionsImpl userInteractions = new UserInteractionsImpl();
     
     @Override
+    public void factoryActiveStatus(ArrayList<Factory> playerFactories) {
+        for(Factory f: playerFactories){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - VIDA: " + f.getHitpoints() + " CAPACIDAD: " + f.getCapacity() + " RECOLECTADO: " + f.getContents());
+        }
+    }
+
+    @Override
+    public void factoryPendingStatus(ArrayList<Factory> colaProd) {
+        for(Factory f: colaProd){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - Turnos restantes: " +f.getBuildTime());
+            
+        }
+    }
+    
+    /**
+     * Factory Queue Maintenance
+     * @param colaProd fabricas pendientes a construirse
+     * @return Una lista actualizada de la cola de produccion
+     */
+    @Override
     public ArrayList<Factory> factoryQueueMaintenance(ArrayList<Factory> colaProd) {
         ArrayList<Factory> result = new ArrayList();
         for(Factory f : colaProd){
@@ -65,6 +85,28 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
         
         return result;
     }
+
+    @Override
+    public String buildApproval(int money, int energy, int moneyPrice, int energyPrice) {
+        String result = "YES";
+        String temp = "";
+        if(money < moneyPrice){
+            temp = temp + " Dinero insuficientes, necesitas: " + moneyPrice + ", tienes : " + money;
+        }
+        
+        if(energy < energyPrice){
+            temp = temp + " Energia insuficiente, necesitas: " + energyPrice + ", tienes : " + energy;
+        }
+        
+        if(!(temp.isEmpty())){
+            //Si la cadena temporal no esta vacia, quiere decir se encontro algun problema al comprar el edificio
+            result = temp;
+        }
+        
+        return result;
+    }
+
+    
 
     
 }

@@ -14,13 +14,19 @@ public class MilitaryBuilding {
     private int hitpoints;
     private int capacity;
     private int buildTime;
+    private int moneyPrice;
+    private int energyPrice;
 
-    public MilitaryBuilding(String name, int hitpoints, int capacity, int buildTime) {
+    public MilitaryBuilding(String name, int hitpoints, int capacity, int buildTime, int moneyPrice, int energyPrice) {
         this.name = name;
         this.hitpoints = hitpoints;
         this.capacity = capacity;
         this.buildTime = buildTime;
+        this.moneyPrice = moneyPrice;
+        this.energyPrice = energyPrice;
     }
+
+    
 
     public String getName() {
         return name;
@@ -52,6 +58,22 @@ public class MilitaryBuilding {
 
     public void setBuildTime(int buildTime) {
         this.buildTime = buildTime;
+    }
+
+    public int getMoneyPrice() {
+        return moneyPrice;
+    }
+
+    public void setMoneyPrice(int moneyPrice) {
+        this.moneyPrice = moneyPrice;
+    }
+
+    public int getEnergyPrice() {
+        return energyPrice;
+    }
+
+    public void setEnergyPrice(int energyPrice) {
+        this.energyPrice = energyPrice;
     }
     
     
