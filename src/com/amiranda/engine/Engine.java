@@ -178,25 +178,25 @@ public class Engine {
             case 1:
                 PLAYER_ONE.setPlayerBaseSquad(unitInteraction.setupPlayerSquad("Division de Asalto" + " " + this.BASE_SQUAD_NAME, this.NEW_WORLD_ORDER.soldierHitpointModifier(this.BASE_SQUAD_HITPOINTS), this.NEW_WORLD_ORDER.soldierDamageModifier(this.BASE_SQUAD_ATTACKPOINTS), this.NEW_WORLD_ORDER.soldierTimeModifier(this.BASE_SQUAD_BUILD_TIME), this.NEW_WORLD_ORDER.successRateModifier(this.BASE_SQUAD_SUCCESS_RATE), this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SQUAD_RM_PRICE), 0, this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SQUAD_MONEY_PRICE)));
                 PLAYER_ONE.setPlayerBaseSpecialist(unitInteraction.setupPlayerSpecialist("Mech de Asalto" + " " + this.BASE_SPEC_NAME, this.NEW_WORLD_ORDER.soldierHitpointModifier(this.BASE_SPEC_HITPOINTS), this.NEW_WORLD_ORDER.soldierDamageModifier(this.BASE_SPEC_ATTACKPOINTS), this.NEW_WORLD_ORDER.soldierTimeModifier(this.BASE_SPEC_BUILD_TIME), this.NEW_WORLD_ORDER.successRateModifier(this.BASE_SPEC_SUCCESS_RATE), this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SPEC_RM_PRICE), 0, this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SPEC_MONEY_PRICE)));
-                PLAYER_ONE.setPlayerBaseFactory(new Factory("Planta de produccion " + this.BASE_FACTORY_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0 ,this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
-                PLAYER_ONE.setPlayerBaseMarket(new Market("Centro de negocios" + this.BASE_MARKET_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION,0 ,this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
-                PLAYER_ONE.setPlayerBasePowerMine(new PowerMine("Mina Industrial" + this.BASE_PM_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0 ,this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBaseFactory(new Factory("Planta de produccion " + this.BASE_FACTORY_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0, this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBaseMarket(new Market("Centro de negocios" + this.BASE_MARKET_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0, this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBasePowerMine(new PowerMine("Mina Industrial" + this.BASE_PM_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0, this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
                 PLAYER_ONE.setPlayerBaseMilitaryBuilding(new MilitaryBuilding("Laboratorio Militar" + this.BASE_MB_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_MB_HITPOINTS), this.BASE_MB_CAPACITY, this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_MB_BUILD_TIME), this.BASE_MB_MONEY_PRICE, this.BASE_MB_ENERGY_PRICE));
                 break;
             case 2:
                 PLAYER_ONE.setPlayerBaseSquad(unitInteraction.setupPlayerSquad("Falange" + " " + this.BASE_SQUAD_NAME, this.JUPITER_GROUP.soldierHitpointModifier(this.BASE_SQUAD_HITPOINTS), this.JUPITER_GROUP.soldierDamageModifier(this.BASE_SQUAD_ATTACKPOINTS), this.JUPITER_GROUP.soldierTimeModifier(this.BASE_SQUAD_BUILD_TIME), this.JUPITER_GROUP.successRateModifier(this.BASE_SQUAD_SUCCESS_RATE), this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SQUAD_RM_PRICE), 0, this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SQUAD_MONEY_PRICE)));
                 PLAYER_ONE.setPlayerBaseSpecialist(unitInteraction.setupPlayerSpecialist("Atlas" + " " + this.BASE_SPEC_NAME, this.JUPITER_GROUP.soldierHitpointModifier(this.BASE_SPEC_HITPOINTS), this.JUPITER_GROUP.soldierDamageModifier(this.BASE_SPEC_ATTACKPOINTS), this.JUPITER_GROUP.soldierTimeModifier(this.BASE_SPEC_BUILD_TIME), this.JUPITER_GROUP.successRateModifier(this.BASE_SPEC_SUCCESS_RATE), this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SPEC_RM_PRICE), 0, this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SPEC_MONEY_PRICE)));
-                PLAYER_ONE.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0 ,this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
-                PLAYER_ONE.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION,0 ,this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
-                PLAYER_ONE.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0 ,this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0, this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0, this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0, this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
                 PLAYER_ONE.setPlayerBaseMilitaryBuilding(new MilitaryBuilding("Campo de entrenamiento" + this.BASE_MB_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_MB_HITPOINTS), this.BASE_MB_CAPACITY, this.JUPITER_GROUP.buildingTimeModifier(this.BASE_MB_BUILD_TIME), this.BASE_MB_MONEY_PRICE, this.BASE_MB_ENERGY_PRICE));
                 break;
             case 3:
                 PLAYER_ONE.setPlayerBaseSquad(unitInteraction.setupPlayerSquad("Raptor" + " " + this.BASE_SQUAD_NAME, this.THE_INVADERS.soldierHitpointModifier(this.BASE_SQUAD_HITPOINTS), this.THE_INVADERS.soldierDamageModifier(this.BASE_SQUAD_ATTACKPOINTS), this.THE_INVADERS.soldierTimeModifier(this.BASE_SQUAD_BUILD_TIME), this.THE_INVADERS.successRateModifier(this.BASE_SQUAD_SUCCESS_RATE), this.THE_INVADERS.resourcePriceModifier(this.BASE_SQUAD_RM_PRICE), 0, this.THE_INVADERS.resourcePriceModifier(this.BASE_SQUAD_MONEY_PRICE)));
                 PLAYER_ONE.setPlayerBaseSpecialist(unitInteraction.setupPlayerSpecialist("Titan" + " " + this.BASE_SPEC_NAME, this.THE_INVADERS.soldierHitpointModifier(this.BASE_SPEC_HITPOINTS), this.THE_INVADERS.soldierDamageModifier(this.BASE_SPEC_ATTACKPOINTS), this.THE_INVADERS.soldierTimeModifier(this.BASE_SPEC_BUILD_TIME), this.THE_INVADERS.successRateModifier(this.BASE_SPEC_SUCCESS_RATE), this.THE_INVADERS.resourcePriceModifier(this.BASE_SPEC_RM_PRICE), 0, this.THE_INVADERS.resourcePriceModifier(this.BASE_SPEC_MONEY_PRICE)));
-                PLAYER_ONE.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0 ,this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
-                PLAYER_ONE.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0 ,this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
-                PLAYER_ONE.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0 ,this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0, this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0, this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
+                PLAYER_ONE.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0, this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
                 PLAYER_ONE.setPlayerBaseMilitaryBuilding(new MilitaryBuilding("Campo de entrenamiento" + this.BASE_MB_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_MB_HITPOINTS), this.BASE_MB_CAPACITY, this.THE_INVADERS.buildingTimeModifier(this.BASE_MB_BUILD_TIME), this.BASE_MB_MONEY_PRICE, this.BASE_MB_ENERGY_PRICE));
                 break;
         }
@@ -207,25 +207,25 @@ public class Engine {
             case 1:
                 PLAYER_TWO.setPlayerBaseSquad(unitInteraction.setupPlayerSquad("Division de Asalto" + " " + this.BASE_SQUAD_NAME, this.NEW_WORLD_ORDER.soldierHitpointModifier(this.BASE_SQUAD_HITPOINTS), this.NEW_WORLD_ORDER.soldierDamageModifier(this.BASE_SQUAD_ATTACKPOINTS), this.NEW_WORLD_ORDER.soldierTimeModifier(this.BASE_SQUAD_BUILD_TIME), this.NEW_WORLD_ORDER.successRateModifier(this.BASE_SQUAD_SUCCESS_RATE), this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SQUAD_RM_PRICE), 0, this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SQUAD_MONEY_PRICE)));
                 PLAYER_TWO.setPlayerBaseSpecialist(unitInteraction.setupPlayerSpecialist("Mech de Asalto" + " " + this.BASE_SPEC_NAME, this.NEW_WORLD_ORDER.soldierHitpointModifier(this.BASE_SPEC_HITPOINTS), this.NEW_WORLD_ORDER.soldierDamageModifier(this.BASE_SPEC_ATTACKPOINTS), this.NEW_WORLD_ORDER.soldierTimeModifier(this.BASE_SPEC_BUILD_TIME), this.NEW_WORLD_ORDER.successRateModifier(this.BASE_SPEC_SUCCESS_RATE), this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SPEC_RM_PRICE), 0, this.NEW_WORLD_ORDER.resourcePriceModifier(this.BASE_SPEC_MONEY_PRICE)));
-                PLAYER_TWO.setPlayerBaseFactory(new Factory("Planta de produccion " + this.BASE_FACTORY_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0 ,this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
-                PLAYER_TWO.setPlayerBaseMarket(new Market("Centro de negocios" + this.BASE_MARKET_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION,0 ,this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
-                PLAYER_TWO.setPlayerBasePowerMine(new PowerMine("Mina Industrial" + this.BASE_PM_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0 ,this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBaseFactory(new Factory("Planta de produccion " + this.BASE_FACTORY_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0, this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBaseMarket(new Market("Centro de negocios" + this.BASE_MARKET_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0, this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBasePowerMine(new PowerMine("Mina Industrial" + this.BASE_PM_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0, this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
                 PLAYER_TWO.setPlayerBaseMilitaryBuilding(new MilitaryBuilding("Laboratorio Militar" + this.BASE_MB_NAME, this.NEW_WORLD_ORDER.buildingHitpointModifier(this.BASE_MB_HITPOINTS), this.BASE_MB_CAPACITY, this.NEW_WORLD_ORDER.buildingTimeModifier(this.BASE_MB_BUILD_TIME), this.BASE_MB_MONEY_PRICE, this.BASE_MB_ENERGY_PRICE));
                 break;
             case 2:
                 PLAYER_TWO.setPlayerBaseSquad(unitInteraction.setupPlayerSquad("Falange" + " " + this.BASE_SQUAD_NAME, this.JUPITER_GROUP.soldierHitpointModifier(this.BASE_SQUAD_HITPOINTS), this.JUPITER_GROUP.soldierDamageModifier(this.BASE_SQUAD_ATTACKPOINTS), this.JUPITER_GROUP.soldierTimeModifier(this.BASE_SQUAD_BUILD_TIME), this.JUPITER_GROUP.successRateModifier(this.BASE_SQUAD_SUCCESS_RATE), this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SQUAD_RM_PRICE), 0, this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SQUAD_MONEY_PRICE)));
                 PLAYER_TWO.setPlayerBaseSpecialist(unitInteraction.setupPlayerSpecialist("Atlas" + " " + this.BASE_SPEC_NAME, this.JUPITER_GROUP.soldierHitpointModifier(this.BASE_SPEC_HITPOINTS), this.JUPITER_GROUP.soldierDamageModifier(this.BASE_SPEC_ATTACKPOINTS), this.JUPITER_GROUP.soldierTimeModifier(this.BASE_SPEC_BUILD_TIME), this.JUPITER_GROUP.successRateModifier(this.BASE_SPEC_SUCCESS_RATE), this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SPEC_RM_PRICE), 0, this.JUPITER_GROUP.resourcePriceModifier(this.BASE_SPEC_MONEY_PRICE)));
-                PLAYER_TWO.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0 ,this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
-                PLAYER_TWO.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION,0 ,this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
-                PLAYER_TWO.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0 ,this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0, this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0, this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.JUPITER_GROUP.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0, this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
                 PLAYER_TWO.setPlayerBaseMilitaryBuilding(new MilitaryBuilding("Campo de entrenamiento" + this.BASE_MB_NAME, this.JUPITER_GROUP.buildingHitpointModifier(this.BASE_MB_HITPOINTS), this.BASE_MB_CAPACITY, this.JUPITER_GROUP.buildingTimeModifier(this.BASE_MB_BUILD_TIME), this.BASE_MB_MONEY_PRICE, this.BASE_MB_ENERGY_PRICE));
                 break;
             case 3:
                 PLAYER_TWO.setPlayerBaseSquad(unitInteraction.setupPlayerSquad("Raptor" + " " + this.BASE_SQUAD_NAME, this.THE_INVADERS.soldierHitpointModifier(this.BASE_SQUAD_HITPOINTS), this.THE_INVADERS.soldierDamageModifier(this.BASE_SQUAD_ATTACKPOINTS), this.THE_INVADERS.soldierTimeModifier(this.BASE_SQUAD_BUILD_TIME), this.THE_INVADERS.successRateModifier(this.BASE_SQUAD_SUCCESS_RATE), this.THE_INVADERS.resourcePriceModifier(this.BASE_SQUAD_RM_PRICE), 0, this.THE_INVADERS.resourcePriceModifier(this.BASE_SQUAD_MONEY_PRICE)));
                 PLAYER_TWO.setPlayerBaseSpecialist(unitInteraction.setupPlayerSpecialist("Titan" + " " + this.BASE_SPEC_NAME, this.THE_INVADERS.soldierHitpointModifier(this.BASE_SPEC_HITPOINTS), this.THE_INVADERS.soldierDamageModifier(this.BASE_SPEC_ATTACKPOINTS), this.THE_INVADERS.soldierTimeModifier(this.BASE_SPEC_BUILD_TIME), this.THE_INVADERS.successRateModifier(this.BASE_SPEC_SUCCESS_RATE), this.THE_INVADERS.resourcePriceModifier(this.BASE_SPEC_RM_PRICE), 0, this.THE_INVADERS.resourcePriceModifier(this.BASE_SPEC_MONEY_PRICE)));
-                PLAYER_TWO.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0 ,this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
-                PLAYER_TWO.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0 ,this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
-                PLAYER_TWO.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0 ,this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBaseFactory(new Factory("Fabrica clandestina " + this.BASE_FACTORY_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_FACTORY_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_FACTORY_BUILD_TIME), this.BASE_FACTORY_CAPACITY, this.BASE_FACTORY_PRODUCTION, 0, this.BASE_FACTORY_MONEY_PRICE, this.BASE_FACTORY_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBaseMarket(new Market("Mercado negro " + this.BASE_MARKET_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_MARKET_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_MARKET_BUILD_TIME), this.BASE_MARKET_CAPACITY, this.BASE_MARKET_PRODUCTION, 0, this.BASE_MARKET_MONEY_PRICE, this.BASE_MARKET_ENERGY_PRICE));
+                PLAYER_TWO.setPlayerBasePowerMine(new PowerMine("Reactor secreto" + this.BASE_PM_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_PM_HITPOINTS), this.THE_INVADERS.buildingTimeModifier(this.BASE_PM_BUILD_TIME), this.BASE_PM_CAPACITY, this.BASE_PM_PRODUCTION, 0, this.BASE_PM_MONEY_PRICE, this.BASE_PM_ENERGY_PRICE));
                 PLAYER_TWO.setPlayerBaseMilitaryBuilding(new MilitaryBuilding("Campo de entrenamiento" + this.BASE_MB_NAME, this.THE_INVADERS.buildingHitpointModifier(this.BASE_MB_HITPOINTS), this.BASE_MB_CAPACITY, this.THE_INVADERS.buildingTimeModifier(this.BASE_MB_BUILD_TIME), this.BASE_MB_MONEY_PRICE, this.BASE_MB_ENERGY_PRICE));
                 break;
         }
@@ -245,69 +245,6 @@ public class Engine {
         this.userInteraction.showMessage(this.userInteraction.INFO_MESSAGE, "El jugador " + TURNO + " iniciara la partida");
 
         this.TURNO = 0;
-    }
-
-    /*Metodo FACTORYPROCESSING
-    Sirve para manejar las opciones y uso de las fabricas
-     */
-    public Player factoryProcessing(Player activePlayer) {
-        boolean menu = true;
-        Player processedPlayer = activePlayer;
-        ArrayList<Factory> active = processedPlayer.getFactories();
-        ArrayList<Factory> pending = processedPlayer.getFactories();
-        ArrayList<Factory> tmp = new ArrayList();
-        ComandCenter newCC = activePlayer.getCc();
-
-        while (menu) {
-            switch (this.userInteraction.factoryMenu()) {
-                case 0: //Revisando fabricas activas
-                    for(Factory f : active){
-                        this.userInteraction.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints() + " Recolectado: " + f.getContents() + " Capacidad: " + f.getCapacity() );
-                    }
-                    break;
-
-                case 1: //Revisando cola de construccion de fabricas
-                    for(Factory f : pending){
-                        this.userInteraction.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " -> Turnos restantes: " + f.getBuildTime() );
-                    }
-                    break;
-                    
-                case 2: //recolectar recursos
-                    this.userInteraction.showMessage(UserInteractions.WARNING_MESSAGE, "Se recolectará los recursos de este edificio, deseas proceder?");
-                    if(this.userInteraction.confirmAction()){
-                        for(Factory f : active){
-                            if(processedPlayer.getCc().getRawMaterialsCapacity() >= (f.getContents() + processedPlayer.getCc().getRawMaterialQty())){
-                                //si la suma de los contenidos del edificio son menores a la capacidad, se recoletca el elemento
-                                newCC.setRawMaterialQty(f.getContents() + processedPlayer.getCc().getRawMaterialQty());
-                                userInteraction.showMessage(UserInteractions.INFO_MESSAGE, "Materia Prima colectada de " + f.getName() + ": " + f.getContents());
-                                f.setContents(0);
-                                tmp.add(f);
-                            }else{
-                                userInteraction.showMessage(UserInteractions.ERROR_MESSAGE, "No se pudo recolectar el recurso, excede la capacidad de almacenamiento del centro de mando");
-                            }
-                        }
-                    }
-                    break;
-                    
-                case 3: //Creando una nueva fabrica
-                    if(this.userInteraction.confirmAction()){
-                        if(this.buildingInteraction.buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseFactory().getMoneyPrice(), processedPlayer.getPlayerBaseFactory().getEnergyPrice()).equals("YES"))
-                        {
-                            pending.add(processedPlayer.getPlayerBaseFactory());
-                            processedPlayer.setFactConstruction(pending);
-                        }else{
-                            this.userInteraction.showMessage(UserInteractions.ERROR_MESSAGE, this.buildingInteraction.buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseFactory().getMoneyPrice(), processedPlayer.getPlayerBaseFactory().getEnergyPrice()));
-                        }
-                    }
-                    break;
-
-                case 4: //Saliendo del menu de fabricas
-                    menu = false;
-                    break;
-            }
-        }
-        
-        return processedPlayer;
     }
 
     /*
@@ -363,14 +300,31 @@ public class Engine {
                 System.out.println("-----------------------------------------");
                 System.out.println("RONDA #" + this.RONDA);
                 System.out.println("-----------------------------------------");
-                
+
                 for (Player activePlayer : this.players) {
+                    
+                    /* FASE DE MANTENIMIENTO INICIAL
+                    La fase de mantenimiento inicial consta de validar el estado de las construcciones del jugador,
+                    que sus edificios de produccion generen recursos y que sus bases militares produzcan unidades
+                    */
+                    System.out.println("");
+                    System.out.println("");
+                    //Validando la construccion de fabricas
+                    activePlayer.setFactories(buildingInteraction.factoryQueueProduction(activePlayer.getFactConstruction(), activePlayer.getFactories(), activePlayer.getPlayerBaseFactory()));
+                    //Limpiando las fabricas pendientes que ya fueron terminadas de construir
+                    activePlayer.setFactConstruction(buildingInteraction.factoryCleanQueue(activePlayer.getFactConstruction()));
+                    
+                    //Validando la construccion de mercados
+                    activePlayer.setMarkets(buildingInteraction.marketQueueProduction(activePlayer.getMarketConstruction(), activePlayer.getMarkets(), activePlayer.getPlayerBaseMarket()));
+                    //Limpiando los mercados pendientes que ya fueron terminadas de construir
+                    activePlayer.setMarketConstruction(buildingInteraction.marketCleanQueue(activePlayer.getMarketConstruction()));
+                    
                     /* FASE PRINCIPAL DEL JUGADOR
                     la fase principal es donde el jugador toma todas las decisiones que
                     afectaran a su turno y los turnos siguientes
                     aqui es donde puede construir, recolectar, entrenar soldado
                     y dar ordenes de ataque
-                    */
+                             */
                     while (menu) {
                         switch (this.userInteraction.mainMenu(activePlayer)) {
                             case 0: //Revisando recursos
@@ -378,7 +332,11 @@ public class Engine {
                                 break;
 
                             case 1: //Ingresando a menu de fabricas
-                                activePlayer = factoryProcessing(activePlayer);
+                                activePlayer = this.buildingInteraction.factoryOperations(activePlayer);
+                                break;
+
+                            case 2:
+                                activePlayer = this.buildingInteraction.marketOperations(activePlayer);
                                 break;
 
                             case 3:
@@ -399,19 +357,20 @@ public class Engine {
 
                         }
                     }
-                    
+
                     /*
                     FASE DE MANTENIMIENTO FINAL
                     Se resuelve todo lo pendiente relacionado con las
                     colas de produccion
-                    */
+                     */
                     this.players.get(TURNO).setFactConstruction(this.buildingInteraction.factoryQueueMaintenance(activePlayer.getFactConstruction()));
-                    
+                    this.players.get(TURNO).setMarketConstruction(this.buildingInteraction.marketQueueMaintenance(activePlayer.getMarketConstruction()));
+
                     //Realizando ajustes finales para iniciar un nuevo turno
                     menu = true;
-                    if(TURNO == 0){
+                    if (TURNO == 0) {
                         TURNO = 1;
-                    }else{
+                    } else {
                         TURNO = 0;
                     }
                 }

@@ -16,6 +16,7 @@ public class MilitaryBuilding {
     private int buildTime;
     private int moneyPrice;
     private int energyPrice;
+    private int buildProgress;
 
     public MilitaryBuilding(String name, int hitpoints, int capacity, int buildTime, int moneyPrice, int energyPrice) {
         this.name = name;
@@ -24,6 +25,7 @@ public class MilitaryBuilding {
         this.buildTime = buildTime;
         this.moneyPrice = moneyPrice;
         this.energyPrice = energyPrice;
+        this.buildProgress = buildTime;
     }
 
     
@@ -74,6 +76,14 @@ public class MilitaryBuilding {
 
     public void setEnergyPrice(int energyPrice) {
         this.energyPrice = energyPrice;
+    }
+
+    public int getBuildProgress() {
+        return buildProgress;
+    }
+
+    public void setBuildProgress(int buildProgress) {
+        this.buildProgress = buildProgress;
     }
     
     

@@ -11,7 +11,7 @@ package com.amiranda.parcial2.classes.core;
  */
 public class Building {
     private int hitpoints;
-    private int buildTime;
+    final int buildTime;
     private int capacity;
     private int productionPerTurn;
     private int contents;
@@ -57,11 +57,7 @@ public class Building {
     public int getBuildTime() {
         return buildTime;
     }
-
-    public void setBuildTime(int buildTime) {
-        this.buildTime = buildTime;
-    }
-
+       
     public int getCapacity() {
         return capacity;
     }

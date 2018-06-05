@@ -13,10 +13,12 @@ import com.amiranda.parcial2.classes.core.Building;
  */
 public class Market extends Building{
     private String name;
+    private int buildProgress;
 
     public Market(String name, int hitpoints, int buildTime, int capacity, int productionPerTurn, int contents, int moneyPrice, int energyPrice) {
         super(hitpoints, buildTime, capacity, productionPerTurn, contents, moneyPrice, energyPrice);
         this.name = name;
+        this.buildProgress = buildTime;
     }
 
     
@@ -27,6 +29,14 @@ public class Market extends Building{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getBuildProgress() {
+        return buildProgress;
+    }
+
+    public void setBuildProgress(int buildProgress) {
+        this.buildProgress = buildProgress;
     }
 
     

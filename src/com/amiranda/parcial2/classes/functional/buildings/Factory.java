@@ -11,14 +11,16 @@ import com.amiranda.parcial2.classes.core.Building;
  *
  * @author allan
  */
-public class Factory extends Building{
+public class Factory extends Building {
+
     private String name;
+    private int buildProgress;
 
     public Factory(String name, int hitpoints, int buildTime, int capacity, int productionPerTurn, int contents, int moneyPrice, int energyPrice) {
         super(hitpoints, buildTime, capacity, productionPerTurn, contents, moneyPrice, energyPrice);
         this.name = name;
+        this.buildProgress = buildTime;
     }
-
 
     public String getName() {
         return name;
@@ -26,7 +28,14 @@ public class Factory extends Building{
 
     public void setName(String name) {
         this.name = name;
-    }   
-    
-    
+    }
+
+    public int getBuildProgress() {
+        return buildProgress;
+    }
+
+    public void setBuildProgress(int buildProgress) {
+        this.buildProgress = buildProgress;
+    }
+
 }

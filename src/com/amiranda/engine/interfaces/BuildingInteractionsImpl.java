@@ -5,7 +5,10 @@
  */
 package com.amiranda.engine.interfaces;
 
+import com.amiranda.parcial2.classes.core.Player;
+import com.amiranda.parcial2.classes.functional.buildings.ComandCenter;
 import com.amiranda.parcial2.classes.functional.buildings.Factory;
+import com.amiranda.parcial2.classes.functional.buildings.Market;
 import java.util.ArrayList;
 
 
@@ -16,19 +19,99 @@ import java.util.ArrayList;
 public class BuildingInteractionsImpl implements BuildingInteractions{
     UserInteractionsImpl userInteractions = new UserInteractionsImpl();
     
+    /**
+     * factoryActiveStatus
+     * @param playerBuilding 
+     * Muestra el estado de las fabricas que se tienen activas durante el juego
+     */
     @Override
-    public void factoryActiveStatus(ArrayList<Factory> playerFactories) {
-        for(Factory f: playerFactories){
+    public void factoryActiveStatus(ArrayList<Factory> playerBuilding) {
+        for(Factory f: playerBuilding){
             userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - VIDA: " + f.getHitpoints() + " CAPACIDAD: " + f.getCapacity() + " RECOLECTADO: " + f.getContents());
         }
     }
-
+    
+    /**
+     * factoryPendingStatus
+     * @param colaProd 
+     * Muestra cuanto falta para que las fabricas que estan construyendose sean finalizadas
+     */
     @Override
     public void factoryPendingStatus(ArrayList<Factory> colaProd) {
         for(Factory f: colaProd){
-            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - Turnos restantes: " +f.getBuildTime());
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - Turnos restantes: " +f.getBuildProgress());
             
         }
+    }
+    
+    /**
+     * factoryOperations
+     * @param activePlayer
+     * @return un objeto de jugador procesado
+     */
+    public Player factoryOperations(Player activePlayer) {
+        boolean menu = true;
+        Player processedPlayer = activePlayer;
+        ArrayList<Factory> active = processedPlayer.getFactories();
+        ArrayList<Factory> pending = processedPlayer.getFactConstruction();
+        ArrayList<Factory> tmp = new ArrayList();
+        ComandCenter newCC = activePlayer.getCc();
+
+        while (menu) {
+            switch (userInteractions.factoryMenu()) {
+                case 0: //Revisando fabricas activas
+                    for(Factory f : active){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints() + " Recolectado: " + f.getContents() + " Capacidad: " + f.getCapacity() );
+                    }
+                    break;
+
+                case 1: //Revisando cola de construccion de fabricas
+                    for(Factory f : pending){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " -> Turnos restantes: " + f.getBuildProgress() );
+                    }
+                    break;
+                    
+                case 2: //recolectar recursos
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Se recolectará los recursos de este edificio, deseas proceder?");
+                    if(userInteractions.confirmAction()){
+                        for(Factory f : active){
+                            if(processedPlayer.getCc().getRawMaterialsCapacity() >= (f.getContents() + processedPlayer.getCc().getRawMaterialQty())){
+                                //si la suma de los contenidos del edificio son menores a la capacidad, se recoletca el elemento
+                                newCC.setRawMaterialQty(f.getContents() + processedPlayer.getCc().getRawMaterialQty());
+                                userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Materia Prima colectada de " + f.getName() + ": " + f.getContents());
+                                f.setContents(0);
+                                tmp.add(f);
+                            }else{
+                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No se pudo recolectar el recurso, excede la capacidad de almacenamiento del centro de mando");
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 3: //Creando una nueva fabrica
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseFactory().getName() + "Cuesta " + processedPlayer.getPlayerBaseFactory().getMoneyPrice() + "de Dinero y " + processedPlayer.getPlayerBaseFactory().getEnergyPrice() + " de energia." );
+                    if(userInteractions.confirmAction()){
+                        if(buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseFactory().getMoneyPrice(), processedPlayer.getPlayerBaseFactory().getEnergyPrice()).equals("YES"))
+                        {
+                            Factory newBuilding;
+                            newBuilding = new Factory(processedPlayer.getPlayerBaseFactory().getName(), processedPlayer.getPlayerBaseFactory().getHitpoints(), processedPlayer.getPlayerBaseFactory().getBuildTime(), processedPlayer.getPlayerBaseFactory().getCapacity(), processedPlayer.getPlayerBaseFactory().getContents(), processedPlayer.getPlayerBaseFactory().getProductionPerTurn(),processedPlayer.getPlayerBaseFactory().getMoneyPrice(), processedPlayer.getPlayerBaseFactory().getEnergyPrice());
+                            pending.add(newBuilding);
+                            processedPlayer.setFactConstruction(pending);
+                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseFactory().getMoneyPrice());
+                            newCC.setEnergyQty(newCC.getEnergyQty() - processedPlayer.getPlayerBaseFactory().getEnergyPrice());
+                        }else{
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseFactory().getMoneyPrice(), processedPlayer.getPlayerBaseFactory().getEnergyPrice()));
+                        }
+                    }
+                    break;
+
+                case 4: //Saliendo del menu de fabricas
+                    menu = false;
+                    break;
+            }
+        }
+        
+        return processedPlayer;
     }
     
     /**
@@ -39,32 +122,50 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
     @Override
     public ArrayList<Factory> factoryQueueMaintenance(ArrayList<Factory> colaProd) {
         ArrayList<Factory> result = new ArrayList();
+        int progress;
         for(Factory f : colaProd){
-            f.setBuildTime(f.getBuildTime() - 1);
+            progress = f.getBuildProgress();
+            progress--;
+            f.setBuildProgress(progress);
             result.add(f);
         }
         return result;
     }
     
+    /**
+     * factoryQueueProduction
+     * @param colaProd
+     * @param playerBuildings
+     * @param playerBaseBuildings
+     * @return una lista actualizada de las fabricas que se han construido
+     */
     @Override
-    public ArrayList<Factory> factoryQueueProduction(ArrayList<Factory> colaProd, ArrayList<Factory> playerFactories, Factory playerBaseFactory) {
-        ArrayList<Factory> result = playerFactories;
+    public ArrayList<Factory> factoryQueueProduction(ArrayList<Factory> colaProd, ArrayList<Factory> playerBuildings, Factory playerBaseBuildings) {
+        ArrayList<Factory> result = playerBuildings;
+        Factory newBuilding;
+        newBuilding = new Factory(playerBaseBuildings.getName(), playerBaseBuildings.getHitpoints(), playerBaseBuildings.getBuildTime(), playerBaseBuildings.getCapacity(), playerBaseBuildings.getContents(), playerBaseBuildings.getProductionPerTurn(),playerBaseBuildings.getMoneyPrice(), playerBaseBuildings.getEnergyPrice());
         for(Factory f : colaProd){
-            if(f.getBuildTime() <= 0){
-                result.add(playerBaseFactory);
-                userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseFactory.getName());
+            if(f.getBuildProgress() <= 0){
+                result.add(newBuilding);
+                userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseBuildings.getName());
             }
         }
+                
         
         return result;
     }
-
+    
+    /**
+     * factoryCleanQueue
+     * @param colaProd
+     * @return una lista actualizada de las fabricas pendientes
+     */
     @Override
     public ArrayList<Factory> factoryCleanQueue(ArrayList<Factory> colaProd) {
         int i = 0;
         ArrayList<Factory> result = colaProd;
         for(Factory f : colaProd){
-            if(f.getBuildTime() <= 0){
+            if(f.getBuildProgress() <= 0){
                 result.remove(i);
                 i++;
             }
@@ -74,9 +175,9 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
     }
 
     @Override
-    public ArrayList<Factory> factoryMaintenance(ArrayList<Factory> playerFactories) {
+    public ArrayList<Factory> factoryMaintenance(ArrayList<Factory> playerBuilding) {
         ArrayList<Factory> result = new ArrayList();
-        for(Factory f : playerFactories){
+        for(Factory f : playerBuilding){
             //Reduciendo en 1 el tiempo de turno de construccion
             if(f.getHitpoints()<= 0){
                 userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
@@ -106,7 +207,141 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
         return result;
     }
 
-    
+    @Override
+    public Player marketOperations(Player activePlayer) {
+        boolean menu = true;
+        Player processedPlayer = activePlayer;
+        ArrayList<Market> active = processedPlayer.getMarkets();
+        ArrayList<Market> pending = processedPlayer.getMarketConstruction();
+        ArrayList<Market> tmp = new ArrayList();
+        ComandCenter newCC = activePlayer.getCc();
 
-    
+        while (menu) {
+            switch (userInteractions.marketMenu()) {
+                case 0: //Revisando fabricas activas
+                    for(Market f : active){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints() + " Recolectado: " + f.getContents() + " Capacidad: " + f.getCapacity() );
+                    }
+                    break;
+
+                case 1: //Revisando cola de construccion de fabricas
+                    for(Market f : pending){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " -> Turnos restantes: " + f.getBuildProgress() );
+                    }
+                    break;
+                    
+                case 2: //recolectar recursos
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Se recolectará los recursos de este edificio, deseas proceder?");
+                    if(userInteractions.confirmAction()){
+                        for(Market f : active){
+                            if(processedPlayer.getCc().getRawMaterialsCapacity() >= (f.getContents() + processedPlayer.getCc().getRawMaterialQty())){
+                                //si la suma de los contenidos del edificio son menores a la capacidad, se recoletca el elemento
+                                newCC.setRawMaterialQty(f.getContents() + processedPlayer.getCc().getRawMaterialQty());
+                                userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Materia Prima colectada de " + f.getName() + ": " + f.getContents());
+                                f.setContents(0);
+                                tmp.add(f);
+                            }else{
+                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No se pudo recolectar el recurso, excede la capacidad de almacenamiento del centro de mando");
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 3: //Creando una nueva fabrica
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseMarket().getName() + "Cuesta " + processedPlayer.getPlayerBaseMarket().getMoneyPrice() + "de Dinero y " + processedPlayer.getPlayerBaseMarket().getEnergyPrice() + " de energia." );
+                    if(userInteractions.confirmAction()){
+                        if(buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseMarket().getMoneyPrice(), processedPlayer.getPlayerBaseMarket().getEnergyPrice()).equals("YES"))
+                        {
+                            Market newBuilding;
+                            newBuilding = new Market(processedPlayer.getPlayerBaseMarket().getName(), processedPlayer.getPlayerBaseMarket().getHitpoints(), processedPlayer.getPlayerBaseMarket().getBuildTime(), processedPlayer.getPlayerBaseMarket().getCapacity(), processedPlayer.getPlayerBaseMarket().getContents(), processedPlayer.getPlayerBaseMarket().getProductionPerTurn(),processedPlayer.getPlayerBaseMarket().getMoneyPrice(), processedPlayer.getPlayerBaseMarket().getEnergyPrice());
+                            pending.add(newBuilding);
+                            processedPlayer.setMarketConstruction(pending);
+                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseMarket().getMoneyPrice());
+                            newCC.setEnergyQty(newCC.getEnergyQty() - processedPlayer.getPlayerBaseMarket().getEnergyPrice());
+                        }else{
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseMarket().getMoneyPrice(), processedPlayer.getPlayerBaseMarket().getEnergyPrice()));
+                        }
+                    }
+                    break;
+
+                case 4: //Saliendo del menu de fabricas
+                    menu = false;
+                    break;
+            }
+        }
+        
+        return processedPlayer;
+    }
+
+    @Override
+    public void marketActiveStatus(ArrayList<Market> playerBuilding) {
+        for(Market f: playerBuilding){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - VIDA: " + f.getHitpoints() + " CAPACIDAD: " + f.getCapacity() + " RECOLECTADO: " + f.getContents());
+        }
+    }
+
+    @Override
+    public void marketPendingStatus(ArrayList<Market> colaProd) {
+        for(Market f: colaProd){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - Turnos restantes: " +f.getBuildProgress());
+            
+        }
+    }
+
+    @Override
+    public ArrayList<Market> marketQueueMaintenance(ArrayList<Market> colaProd) {
+        ArrayList<Market> result = new ArrayList();
+        int progress;
+        for(Market f : colaProd){
+            progress = f.getBuildProgress();
+            progress--;
+            f.setBuildProgress(progress);
+            result.add(f);
+        }
+        return result;
+    }
+
+    @Override
+    public ArrayList<Market> marketQueueProduction(ArrayList<Market> colaProd, ArrayList<Market> playerBuildings, Market playerBaseBuilding) {
+        ArrayList<Market> result = playerBuildings;
+        Market newBuilding;
+        newBuilding = new Market(playerBaseBuilding.getName(), playerBaseBuilding.getHitpoints(), playerBaseBuilding.getBuildTime(), playerBaseBuilding.getCapacity(), playerBaseBuilding.getContents(), playerBaseBuilding.getProductionPerTurn(),playerBaseBuilding.getMoneyPrice(), playerBaseBuilding.getEnergyPrice());
+        for(Market f : colaProd){
+            if(f.getBuildProgress() <= 0){
+                result.add(newBuilding);
+                userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseBuilding.getName());
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ArrayList<Market> marketCleanQueue(ArrayList<Market> colaProd) {
+        int i = 0;
+        ArrayList<Market> result = colaProd;
+        for(Market f : colaProd){
+            if(f.getBuildProgress() <= 0){
+                result.remove(i);
+                i++;
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ArrayList<Market> marketMaintenance(ArrayList<Market> playerBuilding) {
+        ArrayList<Market> result = new ArrayList();
+        for(Market f : playerBuilding){
+            //Reduciendo en 1 el tiempo de turno de construccion
+            if(f.getHitpoints()<= 0){
+                userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+            }
+        }
+        
+        return result;
+    }
+
+   
 }
