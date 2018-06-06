@@ -313,11 +313,24 @@ public class Engine {
                     activePlayer.setFactories(buildingInteraction.factoryQueueProduction(activePlayer.getFactConstruction(), activePlayer.getFactories(), activePlayer.getPlayerBaseFactory()));
                     //Limpiando las fabricas pendientes que ya fueron terminadas de construir
                     activePlayer.setFactConstruction(buildingInteraction.factoryCleanQueue(activePlayer.getFactConstruction()));
+                    //validando la vida de las fabricas
+                    activePlayer.setFactories(buildingInteraction.factoryMaintenance(activePlayer.getFactories()));
+                   
                     
                     //Validando la construccion de mercados
                     activePlayer.setMarkets(buildingInteraction.marketQueueProduction(activePlayer.getMarketConstruction(), activePlayer.getMarkets(), activePlayer.getPlayerBaseMarket()));
                     //Limpiando los mercados pendientes que ya fueron terminadas de construir
                     activePlayer.setMarketConstruction(buildingInteraction.marketCleanQueue(activePlayer.getMarketConstruction()));
+                    //validando la vida de los mercados
+                    activePlayer.setMarkets(buildingInteraction.marketMaintenance(activePlayer.getMarkets()));
+                    
+                    //Validando la construccion de minas
+                    activePlayer.setMines(buildingInteraction.powerMineQueueProduction(activePlayer.getMineConstruction(), activePlayer.getMines(), activePlayer.getPlayerBasePowerMine()));
+                    //Limpiando las minas pendientes que ya fueron terminadas de construir
+                    activePlayer.setMineConstruction(buildingInteraction.powerMineCleanQueue(activePlayer.getMineConstruction()));
+                    //validando la vida de las minas
+                    activePlayer.setMines(buildingInteraction.powerMineMaintenance(activePlayer.getMines()));
+                    
                     
                     /* FASE PRINCIPAL DEL JUGADOR
                     la fase principal es donde el jugador toma todas las decisiones que
@@ -340,6 +353,7 @@ public class Engine {
                                 break;
 
                             case 3:
+                                activePlayer = this.buildingInteraction.powerMineOperations(activePlayer);
                                 break;
 
                             case 4:
@@ -365,7 +379,9 @@ public class Engine {
                      */
                     this.players.get(TURNO).setFactConstruction(this.buildingInteraction.factoryQueueMaintenance(activePlayer.getFactConstruction()));
                     this.players.get(TURNO).setMarketConstruction(this.buildingInteraction.marketQueueMaintenance(activePlayer.getMarketConstruction()));
-
+                    this.players.get(TURNO).setMineConstruction(this.buildingInteraction.powerMineQueueMaintenance(activePlayer.getMineConstruction()));
+                    
+                    
                     //Realizando ajustes finales para iniciar un nuevo turno
                     menu = true;
                     if (TURNO == 0) {

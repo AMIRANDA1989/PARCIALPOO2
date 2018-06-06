@@ -12,21 +12,21 @@ import com.amiranda.parcial2.classes.core.Building;
  * @author allan
  */
 public class PowerMine extends Building{
-    String nombre;
+    String name;
     private int buildProgress;
 
-    public PowerMine(String nombre, int hitpoints, int buildTime, int capacity, int productionPerTurn, int contents, int moneyPrice, int energyPrice) {
+    public PowerMine(String name, int hitpoints, int buildTime, int capacity, int productionPerTurn, int contents, int moneyPrice, int energyPrice) {
         super(hitpoints, buildTime, capacity, productionPerTurn, contents, moneyPrice, energyPrice);
-        this.nombre = nombre;
+        this.name = name;
         this.buildProgress = buildTime;
     }    
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getBuildProgress() {

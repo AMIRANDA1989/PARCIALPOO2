@@ -8,6 +8,7 @@ package com.amiranda.engine.interfaces;
 import com.amiranda.parcial2.classes.core.Player;
 import com.amiranda.parcial2.classes.functional.buildings.Factory;
 import com.amiranda.parcial2.classes.functional.buildings.Market;
+import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
 import java.util.ArrayList;
 
 /**
@@ -35,5 +36,14 @@ public interface BuildingInteractions {
     public ArrayList<Market> marketQueueProduction(ArrayList<Market> colaProd, ArrayList<Market> playerBuildings, Market playerBaseBuilding);
     public ArrayList<Market> marketCleanQueue(ArrayList<Market> colaProd);
     public ArrayList<Market> marketMaintenance(ArrayList<Market> playerBuilding);
+    
+    /*Metodos para las minas*/
+    public void powerMineActiveStatus(ArrayList<PowerMine> playerBuilding);
+    public void powerMinePendingStatus(ArrayList<PowerMine> colaProd);
+    public Player powerMineOperations(Player activePlayer);
+    public ArrayList<PowerMine> powerMineQueueMaintenance(ArrayList<PowerMine> colaProd);
+    public ArrayList<PowerMine> powerMineQueueProduction(ArrayList<PowerMine> colaProd, ArrayList<PowerMine> playerBuildings, PowerMine playerBaseBuilding);
+    public ArrayList<PowerMine> powerMineCleanQueue(ArrayList<PowerMine> colaProd);
+    public ArrayList<PowerMine> powerMineMaintenance(ArrayList<PowerMine> playerBuilding);
     
 }

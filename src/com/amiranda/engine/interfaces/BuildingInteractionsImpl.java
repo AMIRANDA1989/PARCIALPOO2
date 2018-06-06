@@ -9,6 +9,7 @@ import com.amiranda.parcial2.classes.core.Player;
 import com.amiranda.parcial2.classes.functional.buildings.ComandCenter;
 import com.amiranda.parcial2.classes.functional.buildings.Factory;
 import com.amiranda.parcial2.classes.functional.buildings.Market;
+import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
 import java.util.ArrayList;
 
 
@@ -181,6 +182,8 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
             //Reduciendo en 1 el tiempo de turno de construccion
             if(f.getHitpoints()<= 0){
                 userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+            }else{
+                result.add(f);
             }
         }
         
@@ -337,6 +340,146 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
             //Reduciendo en 1 el tiempo de turno de construccion
             if(f.getHitpoints()<= 0){
                 userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+            }else{
+                result.add(f);
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public void powerMineActiveStatus(ArrayList<PowerMine> playerBuilding) {
+        for(PowerMine f: playerBuilding){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - VIDA: " + f.getHitpoints() + " CAPACIDAD: " + f.getCapacity() + " RECOLECTADO: " + f.getContents());
+        }
+    }
+
+    @Override
+    public void powerMinePendingStatus(ArrayList<PowerMine> colaProd) {
+        for(PowerMine f: colaProd){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - Turnos restantes: " +f.getBuildProgress());
+            
+        }
+    }
+
+    @Override
+    public Player powerMineOperations(Player activePlayer) {
+        boolean menu = true;
+        Player processedPlayer = activePlayer;
+        ArrayList<PowerMine> active = processedPlayer.getMines() ;
+        ArrayList<PowerMine> pending = processedPlayer.getMineConstruction();
+        ArrayList<PowerMine> tmp = new ArrayList();
+        ComandCenter newCC = activePlayer.getCc();
+
+        while (menu) {
+            switch (userInteractions.powerMineMenu()) {
+                case 0: //Revisando fabricas activas
+                    for(PowerMine f : active){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints() + " Recolectado: " + f.getContents() + " Capacidad: " + f.getCapacity() );
+                    }
+                    break;
+
+                case 1: //Revisando cola de construccion de fabricas
+                    for(PowerMine f : pending){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " -> Turnos restantes: " + f.getBuildProgress() );
+                    }
+                    break;
+                    
+                case 2: //recolectar recursos
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Se recolectará los recursos de este edificio, deseas proceder?");
+                    if(userInteractions.confirmAction()){
+                        for(PowerMine f : active){
+                            if(processedPlayer.getCc().getEnergyCapacity() >= (f.getContents() + processedPlayer.getCc().getEnergyQty())){
+                                //si la suma de los contenidos del edificio son menores a la capacidad, se recoletca el elemento
+                                newCC.setEnergyQty(f.getContents() + processedPlayer.getCc().getEnergyQty());
+                                userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Energia colectada de " + f.getName() + ": " + f.getContents());
+                                f.setContents(0);
+                                tmp.add(f);
+                            }else{
+                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No se pudo recolectar el recurso, excede la capacidad de almacenamiento del centro de mando");
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 3: //Creando una nueva fabrica
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseMarket().getName() + "Cuesta " + processedPlayer.getPlayerBaseMarket().getMoneyPrice() + "de Dinero y " + processedPlayer.getPlayerBaseMarket().getEnergyPrice() + " de energia." );
+                    if(userInteractions.confirmAction()){
+                        if(buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBasePowerMine().getMoneyPrice(), processedPlayer.getPlayerBasePowerMine().getEnergyPrice()).equals("YES"))
+                        {
+                            PowerMine newBuilding;
+                            newBuilding = new PowerMine(processedPlayer.getPlayerBasePowerMine().getName(), processedPlayer.getPlayerBasePowerMine().getHitpoints(), processedPlayer.getPlayerBasePowerMine().getBuildTime(), processedPlayer.getPlayerBasePowerMine().getCapacity(), processedPlayer.getPlayerBasePowerMine().getContents(), processedPlayer.getPlayerBasePowerMine().getProductionPerTurn(),processedPlayer.getPlayerBasePowerMine().getMoneyPrice(), processedPlayer.getPlayerBasePowerMine().getEnergyPrice());
+                            pending.add(newBuilding);
+                            processedPlayer.setMineConstruction(pending);
+                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBasePowerMine().getMoneyPrice());
+                            newCC.setEnergyQty(newCC.getEnergyQty() - processedPlayer.getPlayerBasePowerMine().getEnergyPrice());
+                        }else{
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBasePowerMine().getMoneyPrice(), processedPlayer.getPlayerBasePowerMine().getEnergyPrice()));
+                        }
+                    }
+                    break;
+
+                case 4: //Saliendo del menu de fabricas
+                    menu = false;
+                    break;
+            }
+        }
+        
+        return processedPlayer;
+    }
+
+    @Override
+    public ArrayList<PowerMine> powerMineQueueMaintenance(ArrayList<PowerMine> colaProd) {
+        ArrayList<PowerMine> result = new ArrayList();
+        int progress;
+        for(PowerMine f : colaProd){
+            progress = f.getBuildProgress();
+            progress--;
+            f.setBuildProgress(progress);
+            result.add(f);
+        }
+        return result;
+    }
+
+    @Override
+    public ArrayList<PowerMine> powerMineQueueProduction(ArrayList<PowerMine> colaProd, ArrayList<PowerMine> playerBuildings, PowerMine playerBaseBuilding) {
+        ArrayList<PowerMine> result = playerBuildings;
+        PowerMine newBuilding;
+        newBuilding = new PowerMine(playerBaseBuilding.getName(), playerBaseBuilding.getHitpoints(), playerBaseBuilding.getBuildTime(), playerBaseBuilding.getCapacity(), playerBaseBuilding.getContents(), playerBaseBuilding.getProductionPerTurn(),playerBaseBuilding.getMoneyPrice(), playerBaseBuilding.getEnergyPrice());
+        for(PowerMine f : colaProd){
+            if(f.getBuildProgress() <= 0){
+                result.add(newBuilding);
+                userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseBuilding.getName());
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ArrayList<PowerMine> powerMineCleanQueue(ArrayList<PowerMine> colaProd) {
+        int i = 0;
+        ArrayList<PowerMine> result = colaProd;
+        for(PowerMine f : colaProd){
+            if(f.getBuildProgress() <= 0){
+                result.remove(i);
+                i++;
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ArrayList<PowerMine> powerMineMaintenance(ArrayList<PowerMine> playerBuilding) {
+        ArrayList<PowerMine> result = new ArrayList();
+        for(PowerMine f : playerBuilding){
+            //Reduciendo en 1 el tiempo de turno de construccion
+            if(f.getHitpoints()<= 0){
+                userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+            }else{
+                result.add(f);
             }
         }
         
