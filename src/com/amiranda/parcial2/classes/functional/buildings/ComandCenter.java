@@ -14,6 +14,7 @@ public class ComandCenter {
     private int rawMaterialsCapacity;
     private int moneyCapacity;
     private int energyCapacity;
+    private int unitCapacity;
     private int rawMaterialQty;
     private int moneyQty;
     private int energyQty;
@@ -26,6 +27,7 @@ public class ComandCenter {
         this.rawMaterialQty = rawMaterialQty;
         this.moneyQty = moneyQty;
         this.energyQty = energyQty;
+        this.unitCapacity = 0;
     }
     
 
@@ -83,6 +85,14 @@ public class ComandCenter {
 
     public void setEnergyQty(int energyQty) {
         this.energyQty = energyQty;
+    }
+
+    public int getUnitCapacity() {
+        return unitCapacity;
+    }
+
+    public void setUnitCapacity(int unitCapacity) {
+        this.unitCapacity = unitCapacity;
     }
     
     

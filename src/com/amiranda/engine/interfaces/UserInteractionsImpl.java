@@ -124,9 +124,10 @@ public class UserInteractionsImpl implements UserInteractions {
             System.out.println("2 - Administrar Mercados.");
             System.out.println("3 - Administrar Minas de Energia.");
             System.out.println("4 - Administrar Bases Militares.");
-            System.out.println("5 - Atacar a mi oponente.");
-            System.out.println("6 - Defender mi base.");
-            System.out.println("7 - Finalizar mi turno.");
+            System.out.println("5 - Entrenar unidades.");
+            System.out.println("6 - Atacar a mi oponente.");
+            System.out.println("7 - Defender mi base.");
+            System.out.println("8 - Finalizar mi turno.");
 
             System.out.print("Accion a realizar: ");
             option = in.nextLine();
@@ -154,6 +155,9 @@ public class UserInteractionsImpl implements UserInteractions {
                     return 6;
 
                 case "7":
+                    return 7;
+                    
+                case "8":
                     return 7;
 
                 default:
@@ -301,9 +305,49 @@ public class UserInteractionsImpl implements UserInteractions {
             System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
             System.out.println("0 - Consultar estado de mis bases activas.");
             System.out.println("1 - consultar estado de bases a construir.");
-            System.out.println("2 - Entrenar unidades.");
-            System.out.println("3 - Construir una nueva base.");
-            System.out.println("4 - regresar.");
+            System.out.println("2 - Construir una nueva base.");
+            System.out.println("3 - regresar.");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "0":
+                    return 0;
+
+                case "1":
+                    return 1;
+
+                case "2":
+                    return 2;
+
+                case "3":
+                    return 3;
+
+                default:
+                    this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
+                    break;
+            }
+        }
+        return 4;
+    }
+
+    @Override
+    public int unitConstructionMenu() {
+        boolean validator = true;
+        String option;
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("ADMINISTRACION DE UNIDADES MILITARES");
+            System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
+            System.out.println("0 - Consultar estado de mis Unidades activas.");
+            System.out.println("1 - consultar estado de Unidades en entrenamiento.");
+            System.out.println("2 - Entrenar escuadrones.");
+            System.out.println("3 - Entrenar Especialista.");
+            System.out.println("4 - Entrenar vehiculo liviano.");
+            System.out.println("5 - Entrenar vehiculo pesado.");
+            System.out.println("6 - regresar.");
 
             System.out.print("Accion a realizar: ");
             option = in.nextLine();
@@ -323,7 +367,13 @@ public class UserInteractionsImpl implements UserInteractions {
 
                 case "4":
                     return 4;
-
+                    
+                case "5":
+                    return 5;
+                    
+                case "6":
+                    return 6;
+                    
                 default:
                     this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
                     break;

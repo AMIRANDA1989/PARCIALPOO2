@@ -331,6 +331,24 @@ public class Engine {
                     //validando la vida de las minas
                     activePlayer.setMines(buildingInteraction.powerMineMaintenance(activePlayer.getMines()));
                     
+                    //Validando la construccion de bases
+                    activePlayer.setMbs(buildingInteraction.militaryBaseQueueProduction(activePlayer.getMbsConstruction(), activePlayer.getMbs(), activePlayer.getPlayerBaseMilitaryBuilding()));
+                    //Limpiando las bases pendientes que ya fueron terminadas de construir
+                    activePlayer.setMbsConstruction(buildingInteraction.militaryBaseCleanQueue(activePlayer.getMbsConstruction()));
+                    //validando la vida de las bases
+                    activePlayer.setMbs(buildingInteraction.militaryBaseMaintenance(activePlayer.getMbs()));
+                    
+                    //Validando la construccion de unidades
+                    activePlayer.setSquads(unitInteraction.squadQueueProduction(activePlayer.getSquadConstruction(),activePlayer.getSquads(), activePlayer.getPlayerBaseSquad()));
+                    activePlayer.setSpecialist(unitInteraction.specialistQueueProduction(activePlayer.getSpecialistConstruction(),activePlayer.getSpecialist(), activePlayer.getPlayerBaseSpecialist()));
+
+                    //Limpiando las unidades pendientes
+                    activePlayer.setSquadConstruction(unitInteraction.squadCleanQueue(activePlayer.getSquadConstruction()));
+                    activePlayer.setSpecialistConstruction(unitInteraction.specialistCleanQueue(activePlayer.getSpecialistConstruction()));
+                    
+                    //validando la vida de las unidades activas
+                    activePlayer.setSquads(unitInteraction.squadMaintenance(activePlayer.getSquads()));
+                    activePlayer.setSpecialist(unitInteraction.specialistQueueMaintenance(activePlayer.getSpecialist()));
                     
                     /* FASE PRINCIPAL DEL JUGADOR
                     la fase principal es donde el jugador toma todas las decisiones que
@@ -348,25 +366,30 @@ public class Engine {
                                 activePlayer = this.buildingInteraction.factoryOperations(activePlayer);
                                 break;
 
-                            case 2:
+                            case 2: //Ingresando a menu de mercados
                                 activePlayer = this.buildingInteraction.marketOperations(activePlayer);
                                 break;
 
-                            case 3:
+                            case 3: //Ingresando a menu de Minas
                                 activePlayer = this.buildingInteraction.powerMineOperations(activePlayer);
                                 break;
 
-                            case 4:
+                            case 4://Ingresando a Menu de Bases Militares
                                 activePlayer = this.buildingInteraction.militaryBaseOperations(activePlayer);
                                 break;
 
-                            case 5:
+                            case 5: //Ingresando a Menu de unidades
+                                activePlayer = this.unitInteraction.unitOperations(activePlayer);
                                 break;
 
                             case 6:
                                 break;
 
                             case 7:
+                                menu = false;
+                                break;
+                            
+                            case 8:
                                 menu = false;
                                 break;
 
@@ -376,12 +399,24 @@ public class Engine {
                     /*
                     FASE DE MANTENIMIENTO FINAL
                     Se resuelve todo lo pendiente relacionado con las
-                    colas de produccion
+                    colas de produccion, evaluacion de vida de unidades y manejo de capacidad de unidades
                      */
+                    //Ralizando pasos de construccion de los edificios que estan en cola
                     this.players.get(TURNO).setFactConstruction(this.buildingInteraction.factoryQueueMaintenance(activePlayer.getFactConstruction()));
                     this.players.get(TURNO).setMarketConstruction(this.buildingInteraction.marketQueueMaintenance(activePlayer.getMarketConstruction()));
                     this.players.get(TURNO).setMineConstruction(this.buildingInteraction.powerMineQueueMaintenance(activePlayer.getMineConstruction()));
+                    this.players.get(TURNO).setMbsConstruction(this.buildingInteraction.militaryBaseQueueMaintenance(activePlayer.getMbsConstruction()));
                     
+                    //realizando pasos de construccion de unidades que estan en cola
+                    this.players.get(TURNO).setSquadConstruction(this.unitInteraction.squadQueueMaintenance(activePlayer.getSquadConstruction()));
+                    this.players.get(TURNO).setSpecialistConstruction(this.unitInteraction.specialistQueueMaintenance(activePlayer.getSpecialistConstruction()));
+                    
+                    //validando la vida de las unidades desplegadas
+                    activePlayer.setSquads(unitInteraction.squadMaintenance(activePlayer.getDeployedSquads()));
+                    activePlayer.setSpecialist(unitInteraction.specialistQueueMaintenance(activePlayer.getDeployedSpecialist()));
+                    
+                    //Realizando ajustes a la capacidad actual de unidades
+                    this.players.get(TURNO).getCc().setUnitCapacity(this.buildingInteraction.militaryBaseCurrentCapacity(this.players.get(TURNO).getMbs(), (this.players.get(TURNO).getSquads().size() + this.players.get(TURNO).getSpecialist().size()), (this.players.get(TURNO).getDeployedSquads().size() + this.players.get(TURNO).getDeployedSpecialist().size())));
                     
                     //Realizando ajustes finales para iniciar un nuevo turno
                     menu = true;

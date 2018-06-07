@@ -42,4 +42,6 @@ public interface UserInteractions {
     public int powerMineMenu();
     
     public int militaryBaseMenu();
+    
+    public int unitConstructionMenu();
 }

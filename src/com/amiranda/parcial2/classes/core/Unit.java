@@ -13,6 +13,7 @@ public class Unit {
     private int hitpoints;
     private int attackPoints;
     private int buildTime;
+    private int buildProgress;
     private int successRate;
     private int rawMaterialsCost;
     private int energyCost;
@@ -26,6 +27,7 @@ public class Unit {
         this.rawMaterialsCost = rawMaterialsCost;
         this.energyCost = energyCost;
         this.moneyCost = moneyCost;
+        this.buildProgress = buildTime;
     }
 
     public int getSuccessRate() {
@@ -82,6 +84,14 @@ public class Unit {
 
     public void setAttackPoints(int attackPoints) {
         this.attackPoints = attackPoints;
+    }
+
+    public int getBuildProgress() {
+        return buildProgress;
+    }
+
+    public void setBuildProgress(int buildProgress) {
+        this.buildProgress = buildProgress;
     }
     
     

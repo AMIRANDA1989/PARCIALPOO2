@@ -49,6 +49,9 @@ public class Player {
     private ArrayList<Specialist> specialist = new ArrayList();  
     private ArrayList<Squad> deployedSquads = new ArrayList();
     private ArrayList<Specialist> deployedSpecialist = new ArrayList();
+    private ArrayList<Squad> squadConstruction = new ArrayList();
+    private ArrayList<Specialist> specialistConstruction = new ArrayList();
+    
     
 
     public Player(String name, int raceCode, ComandCenter cc) {
@@ -268,6 +271,22 @@ public class Player {
 
     public void setMilitaryUnitCapacity(int militaryUnitCapacity) {
         this.militaryUnitCapacity = militaryUnitCapacity;
+    }
+
+    public ArrayList<Squad> getSquadConstruction() {
+        return squadConstruction;
+    }
+
+    public void setSquadConstruction(ArrayList<Squad> squadConstruction) {
+        this.squadConstruction = squadConstruction;
+    }
+
+    public ArrayList<Specialist> getSpecialistConstruction() {
+        return specialistConstruction;
+    }
+
+    public void setSpecialistConstruction(ArrayList<Specialist> specialistConstruction) {
+        this.specialistConstruction = specialistConstruction;
     }
     
     
