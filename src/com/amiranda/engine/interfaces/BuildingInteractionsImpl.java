@@ -9,6 +9,7 @@ import com.amiranda.parcial2.classes.core.Player;
 import com.amiranda.parcial2.classes.functional.buildings.ComandCenter;
 import com.amiranda.parcial2.classes.functional.buildings.Factory;
 import com.amiranda.parcial2.classes.functional.buildings.Market;
+import com.amiranda.parcial2.classes.functional.buildings.MilitaryBuilding;
 import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
 import java.util.ArrayList;
 
@@ -475,6 +476,131 @@ public class BuildingInteractionsImpl implements BuildingInteractions{
     public ArrayList<PowerMine> powerMineMaintenance(ArrayList<PowerMine> playerBuilding) {
         ArrayList<PowerMine> result = new ArrayList();
         for(PowerMine f : playerBuilding){
+            //Reduciendo en 1 el tiempo de turno de construccion
+            if(f.getHitpoints()<= 0){
+                userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+            }else{
+                result.add(f);
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public void militaryBaseActiveStatus(ArrayList<MilitaryBuilding> playerBuilding) {
+        for(MilitaryBuilding f: playerBuilding){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - VIDA: " + f.getHitpoints() + " CAPACIDAD: " + f.getCapacity());
+        }
+    }
+
+    @Override
+    public void militaryBaseStatus(ArrayList<MilitaryBuilding> colaProd) {
+        for(MilitaryBuilding f: colaProd){
+            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " - Turnos restantes: " +f.getBuildProgress());
+            
+        }
+    }
+
+    @Override
+    public Player militaryBaseOperations(Player activePlayer) {
+        boolean menu = true;
+        Player processedPlayer = activePlayer;
+        ArrayList<MilitaryBuilding> active = processedPlayer.getMbs() ;
+        ArrayList<MilitaryBuilding> pending = processedPlayer.getMbsConstruction();
+        ArrayList<MilitaryBuilding> tmp = new ArrayList();
+        ComandCenter newCC = activePlayer.getCc();
+
+        while (menu) {
+            switch (userInteractions.powerMineMenu()) {
+                case 0: //Revisando fabricas activas
+                    for(MilitaryBuilding f : active){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints() + " Recolectado: ");
+                    }
+                    break;
+
+                case 1: //Revisando cola de construccion de fabricas
+                    for(MilitaryBuilding f : pending){
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + " -> Turnos restantes: " + f.getBuildProgress() );
+                    }
+                    break;
+                    
+                case 2: //crear nuevas unidades
+                    
+                    break;
+                    
+                case 3: //Creando una nueva base militar
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseMilitaryBuilding().getName() + "Cuesta " + processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice() + "de Dinero y " + processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice() + " de energia." );
+                    if(userInteractions.confirmAction()){
+                        if(buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice(), processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice()).equals("YES"))
+                        {
+                            MilitaryBuilding newBuilding;
+                            newBuilding = new MilitaryBuilding(processedPlayer.getPlayerBaseMilitaryBuilding().getName(), processedPlayer.getPlayerBaseMilitaryBuilding().getHitpoints(), processedPlayer.getPlayerBaseMilitaryBuilding().getBuildTime(), processedPlayer.getPlayerBaseMilitaryBuilding().getCapacity(),processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice(), processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice());
+                            pending.add(newBuilding);
+                            processedPlayer.setMbsConstruction(pending);
+                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice());
+                            newCC.setEnergyQty(newCC.getEnergyQty() - processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice());
+                        }else{
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice(), processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice()));
+                        }
+                    }
+                    break;
+
+                case 4: //Saliendo del menu de fabricas
+                    menu = false;
+                    break;
+            }
+        }
+        
+        return processedPlayer;
+    }
+
+    @Override
+    public ArrayList<MilitaryBuilding> militaryBaseQueueMaintenance(ArrayList<MilitaryBuilding> colaProd) {
+        ArrayList<MilitaryBuilding> result = new ArrayList();
+        int progress;
+        for(MilitaryBuilding f : colaProd){
+            progress = f.getBuildProgress();
+            progress--;
+            f.setBuildProgress(progress);
+            result.add(f);
+        }
+        return result;
+    }
+
+    @Override
+    public ArrayList<MilitaryBuilding> militaryBaseQueueProduction(ArrayList<MilitaryBuilding> colaProd, ArrayList<MilitaryBuilding> playerBuildings, MilitaryBuilding playerBaseBuilding) {
+        ArrayList<MilitaryBuilding> result = playerBuildings;
+        MilitaryBuilding newBuilding;
+        newBuilding = new MilitaryBuilding(playerBaseBuilding.getName(), playerBaseBuilding.getHitpoints(), playerBaseBuilding.getBuildTime(), playerBaseBuilding.getCapacity(), playerBaseBuilding.getMoneyPrice(), playerBaseBuilding.getEnergyPrice());
+        for(MilitaryBuilding f : colaProd){
+            if(f.getBuildProgress() <= 0){
+                result.add(newBuilding);
+                userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseBuilding.getName());
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ArrayList<MilitaryBuilding> militaryBaseCleanQueue(ArrayList<MilitaryBuilding> colaProd) {
+        int i = 0;
+        ArrayList<MilitaryBuilding> result = colaProd;
+        for(MilitaryBuilding f : colaProd){
+            if(f.getBuildProgress() <= 0){
+                result.remove(i);
+                i++;
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ArrayList<MilitaryBuilding> militaryBaseMaintenance(ArrayList<MilitaryBuilding> playerBuilding) {
+        ArrayList<MilitaryBuilding> result = new ArrayList();
+        for(MilitaryBuilding f : playerBuilding){
             //Reduciendo en 1 el tiempo de turno de construccion
             if(f.getHitpoints()<= 0){
                 userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");

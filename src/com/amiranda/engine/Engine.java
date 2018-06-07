@@ -357,6 +357,7 @@ public class Engine {
                                 break;
 
                             case 4:
+                                activePlayer = this.buildingInteraction.militaryBaseOperations(activePlayer);
                                 break;
 
                             case 5:

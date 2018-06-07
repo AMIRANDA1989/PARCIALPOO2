@@ -292,7 +292,44 @@ public class UserInteractionsImpl implements UserInteractions {
 
     @Override
     public int militaryBaseMenu() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean validator = true;
+        String option;
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("ADMINISTRACION DE BASES MILITARES");
+            System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
+            System.out.println("0 - Consultar estado de mis bases activas.");
+            System.out.println("1 - consultar estado de bases a construir.");
+            System.out.println("2 - Entrenar unidades.");
+            System.out.println("3 - Construir una nueva base.");
+            System.out.println("4 - regresar.");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "0":
+                    return 0;
+
+                case "1":
+                    return 1;
+
+                case "2":
+                    return 2;
+
+                case "3":
+                    return 3;
+
+                case "4":
+                    return 4;
+
+                default:
+                    this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
+                    break;
+            }
+        }
+        return 4;
     }
 
 }

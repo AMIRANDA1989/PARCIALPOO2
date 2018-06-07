@@ -27,6 +27,7 @@ public class Player {
     private int marketQty;
     private int powerMineQty;
     private int militaryBuildingQty;
+    private int militaryUnitCapacity;
     private Factory playerBaseFactory; //fabrica base del jugador
     private Market playerBaseMarket; //mercado base
     private PowerMine playerBasePowerMine; //mina base
@@ -58,6 +59,7 @@ public class Player {
         this.marketQty = 0;
         this.militaryBuildingQty = 0;
         this.powerMineQty = 0;
+        this.militaryUnitCapacity = 0;
     }
 
     public String getName() {
@@ -259,6 +261,15 @@ public class Player {
     public void setMbsConstruction(ArrayList<MilitaryBuilding> mbsConstruction) {
         this.mbsConstruction = mbsConstruction;
     }
+
+    public int getMilitaryUnitCapacity() {
+        return militaryUnitCapacity;
+    }
+
+    public void setMilitaryUnitCapacity(int militaryUnitCapacity) {
+        this.militaryUnitCapacity = militaryUnitCapacity;
+    }
+    
     
     
 }

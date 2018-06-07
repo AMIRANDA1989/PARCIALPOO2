@@ -8,6 +8,7 @@ package com.amiranda.engine.interfaces;
 import com.amiranda.parcial2.classes.core.Player;
 import com.amiranda.parcial2.classes.functional.buildings.Factory;
 import com.amiranda.parcial2.classes.functional.buildings.Market;
+import com.amiranda.parcial2.classes.functional.buildings.MilitaryBuilding;
 import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
 import java.util.ArrayList;
 
@@ -45,5 +46,15 @@ public interface BuildingInteractions {
     public ArrayList<PowerMine> powerMineQueueProduction(ArrayList<PowerMine> colaProd, ArrayList<PowerMine> playerBuildings, PowerMine playerBaseBuilding);
     public ArrayList<PowerMine> powerMineCleanQueue(ArrayList<PowerMine> colaProd);
     public ArrayList<PowerMine> powerMineMaintenance(ArrayList<PowerMine> playerBuilding);
+    
+    /*Metodos para las bases militares*/
+    
+    public void militaryBaseActiveStatus(ArrayList<MilitaryBuilding> playerBuilding);
+    public void militaryBaseStatus(ArrayList<MilitaryBuilding> colaProd);
+    public Player militaryBaseOperations(Player activePlayer);
+    public ArrayList<MilitaryBuilding> militaryBaseQueueMaintenance(ArrayList<MilitaryBuilding> colaProd);
+    public ArrayList<MilitaryBuilding> militaryBaseQueueProduction(ArrayList<MilitaryBuilding> colaProd, ArrayList<MilitaryBuilding> playerBuildings, MilitaryBuilding playerBaseBuilding);
+    public ArrayList<MilitaryBuilding> militaryBaseCleanQueue(ArrayList<MilitaryBuilding> colaProd);
+    public ArrayList<MilitaryBuilding> militaryBaseMaintenance(ArrayList<MilitaryBuilding> playerBuilding);
     
 }
