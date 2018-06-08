@@ -18,7 +18,9 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        System.out.println("inicializando engine");
         Engine game = new Engine();
+        System.out.println("comenzando juego");
         game.initEngine();
     }
     

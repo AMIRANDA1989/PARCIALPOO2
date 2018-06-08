@@ -155,7 +155,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
                     }
                     break;
 
-                case 4: //entrenando un nuevo especialista
+                case 3: //entrenando un nuevo especialista
                     userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseSquad().getName() + "Cuesta " + processedPlayer.getPlayerBaseSquad().getMoneyCost() + "de Dinero y " + processedPlayer.getPlayerBaseSquad().getRawMaterialsCost() + " de materia prima.");
 
                     //Primero hay que validar que no hayan especialistas creados, desplegados o en proceso de creacion
@@ -178,15 +178,15 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
                     break;
 
-                case 5: //entrenando un nuevo vehiculo liviano
+                case 4: //entrenando un nuevo vehiculo liviano
 
                     break;
 
-                case 6: //entrenando un nuevo vehiculo pesado
+                case 5: //entrenando un nuevo vehiculo pesado
 
                     break;
 
-                case 3: //Saliendo del menu de fabricas
+                case 6: //Saliendo del menu de fabricas
                     menu = false;
                     break;
             }
@@ -225,15 +225,13 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
     @Override
     public ArrayList<Squad> squadCleanQueue(ArrayList<Squad> colaProd) {
-        int i = 0;
-        ArrayList<Squad> result = colaProd;
+        ArrayList<Squad> result = new ArrayList();
         for (Squad f : colaProd) {
-            if (f.getBuildProgress() <= 0) {
-                result.remove(i);
-                i++;
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
             }
         }
-
+        
         return result;
     }
 
@@ -282,15 +280,13 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
     @Override
     public ArrayList<Specialist> specialistCleanQueue(ArrayList<Specialist> colaProd) {
-        int i = 0;
-        ArrayList<Specialist> result = colaProd;
+        ArrayList<Specialist> result = new ArrayList();
         for (Specialist f : colaProd) {
-            if (f.getBuildProgress() <= 0) {
-                result.remove(i);
-                i++;
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
             }
         }
-
+        
         return result;
     }
 

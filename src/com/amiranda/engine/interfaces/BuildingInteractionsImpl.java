@@ -22,6 +22,24 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
     UserInteractionsImpl userInteractions = new UserInteractionsImpl();
 
     /**
+     * generateResources
+     *
+     * @param capacity capacidad de almacenamiento del edificio
+     * @param generationPerTurn recursos que genera por turno el edificio
+     * @param currentCollected
+     * @return los recursos que generara el edificio que este llamando a este
+     * metodo luego de ser validados
+     */
+    @Override
+    public int generateResources(int capacity, int generationPerTurn, int currentCollected) {
+        if ((generationPerTurn + currentCollected) <= capacity) {
+            return generationPerTurn;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * factoryActiveStatus
      *
      * @param playerBuilding Muestra el estado de las fabricas que se tienen
@@ -88,8 +106,11 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
                                 tmp.add(f);
                             } else {
                                 userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No se pudo recolectar el recurso, excede la capacidad de almacenamiento del centro de mando");
+                                tmp.add(f);
                             }
                         }
+                        processedPlayer.setCc(newCC);
+                        processedPlayer.setFactories(tmp);
                     }
                     break;
 
@@ -149,7 +170,7 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
     public ArrayList<Factory> factoryQueueProduction(ArrayList<Factory> colaProd, ArrayList<Factory> playerBuildings, Factory playerBaseBuildings) {
         ArrayList<Factory> result = playerBuildings;
         Factory newBuilding;
-        newBuilding = new Factory(playerBaseBuildings.getName(), playerBaseBuildings.getHitpoints(), playerBaseBuildings.getBuildTime(), playerBaseBuildings.getCapacity(), playerBaseBuildings.getContents(), playerBaseBuildings.getProductionPerTurn(), playerBaseBuildings.getMoneyPrice(), playerBaseBuildings.getEnergyPrice());
+        newBuilding = new Factory(playerBaseBuildings.getName(), playerBaseBuildings.getHitpoints(), playerBaseBuildings.getBuildTime(), playerBaseBuildings.getCapacity(), playerBaseBuildings.getProductionPerTurn(), playerBaseBuildings.getContents(), playerBaseBuildings.getMoneyPrice(), playerBaseBuildings.getEnergyPrice());
         for (Factory f : colaProd) {
             if (f.getBuildProgress() <= 0) {
                 result.add(newBuilding);
@@ -168,15 +189,13 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
      */
     @Override
     public ArrayList<Factory> factoryCleanQueue(ArrayList<Factory> colaProd) {
-        int i = 0;
-        ArrayList<Factory> result = colaProd;
+        ArrayList<Factory> result = new ArrayList();
         for (Factory f : colaProd) {
-            if (f.getBuildProgress() <= 0) {
-                result.remove(i);
-                i++;
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
             }
         }
-
+        
         return result;
     }
 
@@ -242,16 +261,19 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
                     userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Se recolectará los recursos de este edificio, deseas proceder?");
                     if (userInteractions.confirmAction()) {
                         for (Market f : active) {
-                            if (processedPlayer.getCc().getRawMaterialsCapacity() >= (f.getContents() + processedPlayer.getCc().getRawMaterialQty())) {
+                            if (processedPlayer.getCc().getMoneyCapacity() >= (f.getContents() + processedPlayer.getCc().getMoneyQty())) {
                                 //si la suma de los contenidos del edificio son menores a la capacidad, se recoletca el elemento
-                                newCC.setRawMaterialQty(f.getContents() + processedPlayer.getCc().getRawMaterialQty());
-                                userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Materia Prima colectada de " + f.getName() + ": " + f.getContents());
+                                newCC.setMoneyQty(f.getContents() + processedPlayer.getCc().getMoneyQty());
+                                userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Dinero colectado de " + f.getName() + ": " + f.getContents());
                                 f.setContents(0);
                                 tmp.add(f);
                             } else {
                                 userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No se pudo recolectar el recurso, excede la capacidad de almacenamiento del centro de mando");
+                                tmp.add(f);
                             }
                         }
+                        processedPlayer.setCc(newCC);
+                        processedPlayer.setMarkets(tmp);
                     }
                     break;
 
@@ -268,7 +290,9 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
                         } else {
                             userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseMarket().getMoneyPrice(), processedPlayer.getPlayerBaseMarket().getEnergyPrice()));
                         }
+
                     }
+
                     break;
 
                 case 4: //Saliendo del menu de fabricas
@@ -312,9 +336,10 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
     public ArrayList<Market> marketQueueProduction(ArrayList<Market> colaProd, ArrayList<Market> playerBuildings, Market playerBaseBuilding) {
         ArrayList<Market> result = playerBuildings;
         Market newBuilding;
-        newBuilding = new Market(playerBaseBuilding.getName(), playerBaseBuilding.getHitpoints(), playerBaseBuilding.getBuildTime(), playerBaseBuilding.getCapacity(), playerBaseBuilding.getContents(), playerBaseBuilding.getProductionPerTurn(), playerBaseBuilding.getMoneyPrice(), playerBaseBuilding.getEnergyPrice());
+
         for (Market f : colaProd) {
             if (f.getBuildProgress() <= 0) {
+                newBuilding = new Market(playerBaseBuilding.getName(), playerBaseBuilding.getHitpoints(), playerBaseBuilding.getBuildTime(), playerBaseBuilding.getCapacity(), playerBaseBuilding.getProductionPerTurn(), playerBaseBuilding.getContents(), playerBaseBuilding.getMoneyPrice(), playerBaseBuilding.getEnergyPrice());
                 result.add(newBuilding);
                 userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseBuilding.getName());
             }
@@ -325,15 +350,13 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
 
     @Override
     public ArrayList<Market> marketCleanQueue(ArrayList<Market> colaProd) {
-        int i = 0;
-        ArrayList<Market> result = colaProd;
+        ArrayList<Market> result = new ArrayList();
         for (Market f : colaProd) {
-            if (f.getBuildProgress() <= 0) {
-                result.remove(i);
-                i++;
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
             }
         }
-
+        
         return result;
     }
 
@@ -402,8 +425,11 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
                                 tmp.add(f);
                             } else {
                                 userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No se pudo recolectar el recurso, excede la capacidad de almacenamiento del centro de mando");
+                                tmp.add(f);
                             }
                         }
+                        processedPlayer.setCc(newCC);
+                        processedPlayer.setMines(tmp);
                     }
                     break;
 
@@ -449,7 +475,7 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
     public ArrayList<PowerMine> powerMineQueueProduction(ArrayList<PowerMine> colaProd, ArrayList<PowerMine> playerBuildings, PowerMine playerBaseBuilding) {
         ArrayList<PowerMine> result = playerBuildings;
         PowerMine newBuilding;
-        newBuilding = new PowerMine(playerBaseBuilding.getName(), playerBaseBuilding.getHitpoints(), playerBaseBuilding.getBuildTime(), playerBaseBuilding.getCapacity(), playerBaseBuilding.getContents(), playerBaseBuilding.getProductionPerTurn(), playerBaseBuilding.getMoneyPrice(), playerBaseBuilding.getEnergyPrice());
+        newBuilding = new PowerMine(playerBaseBuilding.getName(), playerBaseBuilding.getHitpoints(), playerBaseBuilding.getBuildTime(), playerBaseBuilding.getCapacity(), playerBaseBuilding.getProductionPerTurn(), playerBaseBuilding.getContents(), playerBaseBuilding.getMoneyPrice(), playerBaseBuilding.getEnergyPrice());
         for (PowerMine f : colaProd) {
             if (f.getBuildProgress() <= 0) {
                 result.add(newBuilding);
@@ -462,15 +488,13 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
 
     @Override
     public ArrayList<PowerMine> powerMineCleanQueue(ArrayList<PowerMine> colaProd) {
-        int i = 0;
-        ArrayList<PowerMine> result = colaProd;
+        ArrayList<PowerMine> result = new ArrayList();
         for (PowerMine f : colaProd) {
-            if (f.getBuildProgress() <= 0) {
-                result.remove(i);
-                i++;
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
             }
         }
-
+        
         return result;
     }
 
@@ -514,7 +538,7 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
         ComandCenter newCC = activePlayer.getCc();
 
         while (menu) {
-            switch (userInteractions.powerMineMenu()) {
+            switch (userInteractions.militaryBaseMenu()) {
                 case 0: //Revisando fabricas activas
                     for (MilitaryBuilding f : active) {
                         userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints() + " Recolectado: ");
@@ -532,7 +556,7 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
                     if (userInteractions.confirmAction()) {
                         if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getEnergyQty(), processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice(), processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice()).equals("YES")) {
                             MilitaryBuilding newBuilding;
-                            newBuilding = new MilitaryBuilding(processedPlayer.getPlayerBaseMilitaryBuilding().getName(), processedPlayer.getPlayerBaseMilitaryBuilding().getHitpoints(), processedPlayer.getPlayerBaseMilitaryBuilding().getBuildTime(), processedPlayer.getPlayerBaseMilitaryBuilding().getCapacity(), processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice(), processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice());
+                            newBuilding = new MilitaryBuilding(processedPlayer.getPlayerBaseMilitaryBuilding().getName(), processedPlayer.getPlayerBaseMilitaryBuilding().getHitpoints(), processedPlayer.getPlayerBaseMilitaryBuilding().getCapacity(), processedPlayer.getPlayerBaseMilitaryBuilding().getBuildTime(), processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice(), processedPlayer.getPlayerBaseMilitaryBuilding().getEnergyPrice());
                             pending.add(newBuilding);
                             processedPlayer.setMbsConstruction(pending);
                             newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseMilitaryBuilding().getMoneyPrice());
@@ -582,15 +606,13 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
 
     @Override
     public ArrayList<MilitaryBuilding> militaryBaseCleanQueue(ArrayList<MilitaryBuilding> colaProd) {
-        int i = 0;
-        ArrayList<MilitaryBuilding> result = colaProd;
+        ArrayList<MilitaryBuilding> result = new ArrayList();
         for (MilitaryBuilding f : colaProd) {
-            if (f.getBuildProgress() <= 0) {
-                result.remove(i);
-                i++;
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
             }
         }
-
+        
         return result;
     }
 
@@ -622,6 +644,42 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
         capTotal = capTotal - (currentUnits + deployedUnits);
 
         return capTotal;
+    }
+
+    @Override
+    public ArrayList<Factory> factoryFillResources(ArrayList<Factory> buildings) {
+        ArrayList<Factory> result = new ArrayList();
+
+        for (Factory b : buildings) {
+            b.setContents(this.generateResources(b.getCapacity(), b.getProductionPerTurn(), b.getContents()) + b.getContents());
+            result.add(b);
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Market> marketFillResources(ArrayList<Market> buildings) {
+        ArrayList<Market> result = new ArrayList();
+
+        for (Market b : buildings) {
+            b.setContents(this.generateResources(b.getCapacity(), b.getProductionPerTurn(), b.getContents()) + b.getContents());
+            result.add(b);
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<PowerMine> powerMineFillResources(ArrayList<PowerMine> buildings) {
+        ArrayList<PowerMine> result = new ArrayList();
+
+        for (PowerMine b : buildings) {
+            b.setContents(this.generateResources(b.getCapacity(), b.getProductionPerTurn(), b.getContents()) + b.getContents());
+            result.add(b);
+        }
+
+        return result;
     }
 
 }

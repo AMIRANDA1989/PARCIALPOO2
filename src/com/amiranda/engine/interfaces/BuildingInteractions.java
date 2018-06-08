@@ -19,6 +19,9 @@ import java.util.ArrayList;
 public interface BuildingInteractions {
     //valida que hayan suficientes fondos para crear un edificio
     public String buildApproval(int money, int energy, int moneyPrice, int energyPrice);
+    //Genera los recursos de los edificios correspondientes
+    public int generateResources(int capacity, int generationPerTurn, int currentCollected);
+       
     
     /*Metodos para las fabricas*/
     public void factoryActiveStatus(ArrayList<Factory> playerBuilding);
@@ -57,5 +60,10 @@ public interface BuildingInteractions {
     public ArrayList<MilitaryBuilding> militaryBaseCleanQueue(ArrayList<MilitaryBuilding> colaProd);
     public ArrayList<MilitaryBuilding> militaryBaseMaintenance(ArrayList<MilitaryBuilding> playerBuilding);
     public int militaryBaseCurrentCapacity(ArrayList<MilitaryBuilding> playerBuildings, int currentUnits, int deployedUnits);
+    
+    //metodos para llenar de recursos los edificios
+    public ArrayList<Factory> factoryFillResources(ArrayList<Factory> buildings);
+    public ArrayList<Market> marketFillResources(ArrayList<Market> buildings);
+    public ArrayList<PowerMine> powerMineFillResources(ArrayList<PowerMine> buildings);
     
 }
