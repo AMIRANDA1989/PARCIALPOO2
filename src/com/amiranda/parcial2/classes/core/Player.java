@@ -61,7 +61,7 @@ public class Player {
     private ArrayList<HeavyVehicle> HeavyConstruction = new ArrayList();
      
     //Ordenes de ataque del jugador
-    private ArrayList<AttackCommand> attackCommands;
+    private ArrayList<AttackCommand> attackCommands = new ArrayList();
     
 
     public Player(String name, int raceCode, ComandCenter cc) {

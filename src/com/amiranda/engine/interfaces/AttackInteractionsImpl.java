@@ -126,7 +126,7 @@ public class AttackInteractionsImpl implements AttackInteractions {
                             attackingUnits = userInteractions.pickAttackingUnits(attPlayer.getSpecialist().size());
 
                             if (attackingUnits != -1) {
-                                remainingSpecialist = this.deploySpecialist1(attPlayer.getSpecialist(), attackingUnits);
+                                remainingSpecialist = new ArrayList();
                                 attSpecialist = this.deploySpecialist2(attPlayer.getSpecialist(), attackingUnits);
                             }
                         }
@@ -165,12 +165,16 @@ public class AttackInteractionsImpl implements AttackInteractions {
                             command.setDeployedSquads(attSquads);
                             command.setDeployedLAV(attLAVs);
                             command.setDeployedHeavy(attHeavies);
+                            command.setDeployedSpecialist(attSpecialist);
 
                             attPlayer.setSquads(remainingSquads);
                             attPlayer.setSpecialist(remainingSpecialist);
                             attPlayer.setLAVs(remainingLAVs);
                             attPlayer.setHeavies(remainingHeavies);
-
+                            
+                            
+                            //attCommands.add(command);
+                            attCommands = attPlayer.getAttackCommands();
                             attCommands.add(command);
                             attPlayer.setAttackCommands(attCommands);
 
@@ -228,16 +232,8 @@ public class AttackInteractionsImpl implements AttackInteractions {
     @Override
     public ArrayList<Specialist> deploySpecialist1(ArrayList<Specialist> units, int qty) {
         int num = 0;
-        ArrayList<Specialist> result = new ArrayList();
-        for (Specialist i : units) {
-            if (!(num <= qty - 1)) {
-                //se toman las primeras unidades en la lista (son las mas veteranas) para atacar
-                //por eso se ignoran
-                result.add(i);
-            }
-            num++;
-        }
-
+        ArrayList<Specialist> result = units;
+        result.clear();
         return result;
     }
 
@@ -245,14 +241,7 @@ public class AttackInteractionsImpl implements AttackInteractions {
     public ArrayList<Specialist> deploySpecialist2(ArrayList<Specialist> units, int qty) {
         int num = 0;
         ArrayList<Specialist> result = new ArrayList();
-        for (Specialist i : units) {
-            if (num <= qty - 1) {
-                //se toman las primeras unidades en la lista (son las mas veteranas) para atacar
-                result.add(i);
-            }
-            num++;
-        }
-
+        result.add(units.get(0));
         return result;
     }
 
@@ -321,12 +310,17 @@ public class AttackInteractionsImpl implements AttackInteractions {
     @Override
     public ArrayList<AttackCommand> setAttackRemainingTurns(ArrayList<AttackCommand> commands) {
         ArrayList<AttackCommand> result = new ArrayList();
-        for (AttackCommand a : commands) {
-            a.setAttackTime(a.getAttackTime() - 1);
-            result.add(a);
-        }
 
+        for (AttackCommand a : commands) {
+            if (a.getAttackTime() != 0) {
+                a.setAttackTime(a.getAttackTime() - 1);
+                result.add(a);
+            }else{
+                result.add(a);
+            }
+        }
         return result;
+
     }
 
     /**

@@ -41,7 +41,7 @@ public class Engine {
     final int BASE_CC_RM_CAPACITY = 10000; //capacidad base de materias primas para el centro de mando
     final int BASE_CC_ENERGY_CAPACITY = 5000; //capacidad base de energia para el centro de mando
     final int BASE_CC_MONEY_CAPACITY = 3000; //capacidad base de dinero para el centro de mando
-    final int BASE_CC_HITPOINTS = 10000; //vida basica del centro de mando
+    final int BASE_CC_HITPOINTS = 100;//10000; //vida basica del centro de mando
     final int START_CC_RM = 1500; //valor inicial de materias primas para el centro de mando
     final int START_CC_ENERGY = 1200; //valor inicial de energia del centro de mando
     final int START_CC_MONEY = 1000; //valor inicial de dinero del centro de mando
@@ -325,17 +325,17 @@ public class Engine {
                 HPP1CC = this.players.get(0).getCc().getHitpoints();
                 HPP2CC = this.players.get(1).getCc().getHitpoints();
 
-                if (HPP1CC == 0 && HPP2CC == 0) {
+                if (HPP1CC <= 0 && HPP2CC <= 0) {
                     System.out.println("EMPATE");
                     RUNNING = false;
                     break;
                 }
-                if (HPP1CC == 0) {
+                if (HPP1CC <= 0) {
                     System.out.println("EL JUGADOR 2 HA SALIDO VICTORIOSO");
                     RUNNING = false;
                     break;
                 }
-                if (HPP2CC == 0) {
+                if (HPP2CC <= 0) {
                     System.out.println("EL JUGADOR 1 HA SALIDO VICTORIOSO");
                     RUNNING = false;
                     break;
@@ -357,6 +357,13 @@ public class Engine {
                         jugadorInactivo = 1;
                     } else {
                         jugadorInactivo = 0;
+                    }
+                     //vlidando vida
+                     
+                    if(activePlayer.getCc().getHitpoints() <= 0){
+                        System.out.println("EL JUGADOR " + jugadorInactivo +" HA SALIDO VICTORIOSO");
+                        RUNNING = false;
+                        break;
                     }
 
                     System.out.println("");
@@ -399,7 +406,7 @@ public class Engine {
                     activePlayer.setSquadConstruction(unitInteraction.squadCleanQueue(activePlayer.getSquadConstruction()));
                     activePlayer.setSpecialistConstruction(unitInteraction.specialistCleanQueue(activePlayer.getSpecialistConstruction()));
                     activePlayer.setLAVConstruction(unitInteraction.lavCleanQueue(activePlayer.getLAVConstruction()));
-                    activePlayer.setLAVConstruction(unitInteraction.lavCleanQueue(activePlayer.getLAVConstruction()));
+                    activePlayer.setHeavyConstruction(unitInteraction.heavyCleanQueue(activePlayer.getHeavyConstruction()));
 
                     //validando la vida de las unidades activas
                     activePlayer.setSquads(unitInteraction.squadMaintenance(activePlayer.getSquads()));
