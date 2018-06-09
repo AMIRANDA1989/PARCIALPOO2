@@ -43,53 +43,53 @@ public class Engine {
     final int BASE_CC_MONEY_CAPACITY = 3000; //capacidad base de dinero para el centro de mando
     final int BASE_CC_HITPOINTS = 100;//10000; //vida basica del centro de mando
     final int START_CC_RM = 1500; //valor inicial de materias primas para el centro de mando
-    final int START_CC_ENERGY = 1200; //valor inicial de energia del centro de mando
-    final int START_CC_MONEY = 1000; //valor inicial de dinero del centro de mando
+    final int START_CC_ENERGY = 1900; //valor inicial de energia del centro de mando
+    final int START_CC_MONEY = 1900; //valor inicial de dinero del centro de mando
 
     //Valores basicos para unidades
     final String BASE_SQUAD_NAME = "(Escuadron)";
     final int BASE_SQUAD_HITPOINTS = 100; //Vida base de los escuadrones
     final int BASE_SQUAD_ATTACKPOINTS = 30; //puntos de ataque base de los escuadrones
-    final int BASE_SQUAD_SUCCESS_RATE = 60; //probabilidad de exito de ataque de los escuadrones
-    final int BASE_SQUAD_RM_PRICE = 20; //costo de  materias primas de los escuadrones
-    final int BASE_SQUAD_MONEY_PRICE = 20; //costo de dinero de los escuadrones
-    final int BASE_SQUAD_ENERGY_PRICE = 20; //costo de dinero de los escuadrones
+    final int BASE_SQUAD_SUCCESS_RATE = 50; //probabilidad de exito de ataque de los escuadrones
+    final int BASE_SQUAD_RM_PRICE = 100; //costo de  materias primas de los escuadrones
+    final int BASE_SQUAD_MONEY_PRICE = 90; //costo de dinero de los escuadrones
+    final int BASE_SQUAD_ENERGY_PRICE = 90; //costo de dinero de los escuadrones
     final int BASE_SQUAD_BUILD_TIME = 2; //tiempo base de construccion de los escuadrones
 
     //valores basicos para Especialistas
     final String BASE_SPEC_NAME = "(Especialista)";
     final int BASE_SPEC_HITPOINTS = 700; //Vida base de los especialistas
-    final int BASE_SPEC_ATTACKPOINTS = 200; //puntos de ataque base de los especialistas
-    final int BASE_SPEC_SUCCESS_RATE = 70; //probabilidad de exito de ataque de los especialistas
-    final int BASE_SPEC_RM_PRICE = 20; //costo de  materias primas de los especialistas
-    final int BASE_SPEC_MONEY_PRICE = 20; //costo de dinero de los especialistas
-    final int BASE_SPEC_ENERGY_PRICE = 20; //costo de dinero de los escuadrones
-    final int BASE_SPEC_BUILD_TIME = 2; // Costo de dinero de los especialistas
+    final int BASE_SPEC_ATTACKPOINTS = 1000; //puntos de ataque base de los especialistas
+    final int BASE_SPEC_SUCCESS_RATE = 75; //probabilidad de exito de ataque de los especialistas
+    final int BASE_SPEC_RM_PRICE = 1200; //costo de  materias primas de los especialistas
+    final int BASE_SPEC_MONEY_PRICE = 1100; //costo de dinero de los especialistas
+    final int BASE_SPEC_ENERGY_PRICE = 1100; //costo de dinero de los escuadrones
+    final int BASE_SPEC_BUILD_TIME = 7; // Costo de dinero de los especialistas
 
     //valores basicos para LAVs
     final String BASE_LAV_NAME = "(Vehiculo liviano)";
-    final int BASE_LAV_HITPOINTS = 500; //Vida base de los especialistas
+    final int BASE_LAV_HITPOINTS = 200; //Vida base de los especialistas
     final int BASE_LAV_ATTACKPOINTS = 100; //puntos de ataque base de los especialistas
     final int BASE_LAV_SUCCESS_RATE = 60; //probabilidad de exito de ataque de los especialistas
-    final int BASE_LAV_RM_PRICE = 20; //costo de  materias primas de los especialistas
-    final int BASE_LAV_MONEY_PRICE = 20; //costo de dinero de los especialistas
-    final int BASE_LAV_ENERGY_PRICE = 20; //costo de dinero de los escuadrones
-    final int BASE_LAV_BUILD_TIME = 2; // Costo de dinero de los especialistas
+    final int BASE_LAV_RM_PRICE = 500; //costo de  materias primas de los especialistas
+    final int BASE_LAV_MONEY_PRICE = 400; //costo de dinero de los especialistas
+    final int BASE_LAV_ENERGY_PRICE = 400; //costo de dinero de los escuadrones
+    final int BASE_LAV_BUILD_TIME = 3; // Costo de dinero de los especialistas
 
     //valores basicos para vehiculos pesados
     final String BASE_HEAVY_NAME = "(Vehiculo Pesado)";
-    final int BASE_HEAVY_HITPOINTS = 600; //Vida base de los especialistas
-    final int BASE_HEAVY_ATTACKPOINTS = 150; //puntos de ataque base de los especialistas
-    final int BASE_HEAVY_SUCCESS_RATE = 80; //probabilidad de exito de ataque de los especialistas
-    final int BASE_HEAVY_RM_PRICE = 20; //costo de  materias primas de los especialistas
-    final int BASE_HEAVY_MONEY_PRICE = 20; //costo de dinero de los especialistas
-    final int BASE_HEAVY_ENERGY_PRICE = 20; //costo de dinero de los escuadrones
-    final int BASE_HEAVY_BUILD_TIME = 2; // Costo de dinero de los especialistas
+    final int BASE_HEAVY_HITPOINTS = 350; //Vida base de los especialistas
+    final int BASE_HEAVY_ATTACKPOINTS = 200; //puntos de ataque base de los especialistas
+    final int BASE_HEAVY_SUCCESS_RATE = 70; //probabilidad de exito de ataque de los especialistas
+    final int BASE_HEAVY_RM_PRICE = 700; //costo de  materias primas de los especialistas
+    final int BASE_HEAVY_MONEY_PRICE = 500; //costo de dinero de los especialistas
+    final int BASE_HEAVY_ENERGY_PRICE = 500; //costo de dinero de los escuadrones
+    final int BASE_HEAVY_BUILD_TIME = 4; // Costo de dinero de los especialistas
 
     //valores basicos para fabricas
     String BASE_FACTORY_NAME = "(Fabrica)";
     final int BASE_FACTORY_HITPOINTS = 700; //Vida base de las fabricas
-    final int BASE_FACTORY_BUILD_TIME = 1; //cantidad de turnos de construccion de una fabrica
+    final int BASE_FACTORY_BUILD_TIME = 4; //cantidad de turnos de construccion de una fabrica
     final int BASE_FACTORY_CAPACITY = 500; //Capacidad base de las fabricas
     final int BASE_FACTORY_PRODUCTION = 100; //Capacidad de produccion de las fabricas por turno
     final int BASE_FACTORY_MONEY_PRICE = 500; //costo de dinero de los especialistas
@@ -98,7 +98,7 @@ public class Engine {
     //valores basicos para Mercados
     final String BASE_MARKET_NAME = "(Mercado)";
     final int BASE_MARKET_HITPOINTS = 300; //Vida base de los mercados
-    final int BASE_MARKET_BUILD_TIME = 1; //cantidad de turnos de construccion de un mercado
+    final int BASE_MARKET_BUILD_TIME = 3; //cantidad de turnos de construccion de un mercado
     final int BASE_MARKET_CAPACITY = 600; //Capacidad base de los Mercados
     final int BASE_MARKET_PRODUCTION = 150; //Capacidad de produccion de las mercados por turno
     final int BASE_MARKET_MONEY_PRICE = 600; //costo de dinero de los especialistas
@@ -107,7 +107,7 @@ public class Engine {
     //valores basicos para Minas de Energia
     final String BASE_PM_NAME = "(Mina de Energia)";
     final int BASE_PM_HITPOINTS = 500; //Vida base de las minas
-    final int BASE_PM_BUILD_TIME = 1; //cantidad de turnos de construccion de las minas
+    final int BASE_PM_BUILD_TIME = 3; //cantidad de turnos de construccion de las minas
     final int BASE_PM_CAPACITY = 1000; //Capacidad base de las minas
     final int BASE_PM_PRODUCTION = 100;//Capacidad de produccion de las minas
     final int BASE_PM_MONEY_PRICE = 800; //costo de dinero de los especialistas
@@ -115,12 +115,12 @@ public class Engine {
 
     //valores basicos para Edificios Militares
     final String BASE_MB_NAME = "(Edificio Militar)";
-    final int BASE_MB_HITPOINTS = 500; //Vida base de las minas
-    final int BASE_MB_BUILD_TIME = 1;//4; //cantidad de turnos de construccion de las minas
-    final int BASE_MB_CAPACITY = 10; //Capacidad base de las minas
+    final int BASE_MB_HITPOINTS = 800; //Vida base de las minas
+    final int BASE_MB_BUILD_TIME = 4;//4; //cantidad de turnos de construccion de las minas
+    final int BASE_MB_CAPACITY = 5; //Capacidad base de las minas
     //final int BASE_MB_PRODUCTION = 100;//Capacidad de produccion de las minas 
-    final int BASE_MB_MONEY_PRICE = 10;//1200; //costo de dinero de los especialistas
-    final int BASE_MB_ENERGY_PRICE = 10;//600; //costo de dinero de los escuadrones
+    final int BASE_MB_MONEY_PRICE = 1200; //costo de dinero de los especialistas
+    final int BASE_MB_ENERGY_PRICE = 600; //costo de dinero de los escuadrones
 
     //Declarando Razas
     final NWO NEW_WORLD_ORDER;
@@ -306,7 +306,7 @@ public class Engine {
          */
         //Configuracion de jugadores
         setupPlayers();
-        int HPP1CC, HPP2CC, jugadorInactivo;
+        int HPP1CC, HPP2CC, jugadorInactivo, espacioUnidades;
         boolean menu = true;
         /* FIN FASE DE CONFIGURACION*/
         ///////////////////////////////////////////////////////////////////////
@@ -395,6 +395,8 @@ public class Engine {
                     activePlayer.setMbsConstruction(buildingInteraction.militaryBaseCleanQueue(activePlayer.getMbsConstruction()));
                     //validando la vida de las bases
                     activePlayer.setMbs(buildingInteraction.militaryBaseMaintenance(activePlayer.getMbs()));
+                    //Realizando ajustes a la capacidad actual de unidades
+                    activePlayer.getCc().setUnitCapacity(this.buildingInteraction.militaryBaseCurrentCapacity(activePlayer));
 
                     //Validando la construccion de unidades
                     activePlayer.setSquads(unitInteraction.squadQueueProduction(activePlayer.getSquadConstruction(), activePlayer.getSquads(), activePlayer.getPlayerBaseSquad()));
@@ -437,10 +439,17 @@ public class Engine {
                     aqui es donde puede construir, recolectar, entrenar soldado
                     y dar ordenes de ataque
                              */
+                    
+                    espacioUnidades = activePlayer.getSquadConstruction().size() + activePlayer.getSquads().size() + activePlayer.getSpecialist().size() + activePlayer.getLAVConstruction().size() + activePlayer.getLAVs().size() + activePlayer.getHeavies().size() + activePlayer.getHeavyConstruction().size();
+                    
+                    System.out.println("");
+                                System.out.println("MATERIA PRIMA: " + activePlayer.getCc().getRawMaterialQty() + " | ENERGIA : " + activePlayer.getCc().getEnergyQty() + " | DINERO : " + activePlayer.getCc().getMoneyQty() + " | ESPACIO UNIDADES : " + espacioUnidades + "/"+ activePlayer.getCc().getUnitCapacity());
+                                
                     while (menu) {
                         switch (this.userInteraction.mainMenu(activePlayer)) {
                             case 0: //Revisando recursos
-                                System.out.println("MATERIA PRIMA: " + activePlayer.getCc().getRawMaterialQty() + " | ENERGIA : " + activePlayer.getCc().getEnergyQty() + " | DINERO : " + activePlayer.getCc().getMoneyQty());
+                                System.out.println("");
+                                System.out.println("MATERIA PRIMA: " + activePlayer.getCc().getRawMaterialQty() + " | ENERGIA : " + activePlayer.getCc().getEnergyQty() + " | DINERO : " + activePlayer.getCc().getMoneyQty() + " | ESPACIO UNIDADES : " + espacioUnidades + "/"+ activePlayer.getCc().getUnitCapacity());
                                 break;
 
                             case 1: //Ingresando a menu de fabricas
@@ -502,12 +511,9 @@ public class Engine {
                     this.players.get(TURNO).setLAVConstruction(this.unitInteraction.lavQueueMaintenance(activePlayer.getLAVConstruction()));
                     this.players.get(TURNO).setHeavyConstruction(this.unitInteraction.heavyQueueMaintenance(activePlayer.getHeavyConstruction()));
 
-                    //validando la vida de las unidades desplegadas
-                    activePlayer.setSquads(unitInteraction.squadMaintenance(activePlayer.getDeployedSquads()));
-                    activePlayer.setSpecialist(unitInteraction.specialistQueueMaintenance(activePlayer.getDeployedSpecialist()));
-
-                    //Realizando ajustes a la capacidad actual de unidades
-                    this.players.get(TURNO).getCc().setUnitCapacity(this.buildingInteraction.militaryBaseCurrentCapacity(this.players.get(TURNO).getMbs(), (this.players.get(TURNO).getSquads().size() + this.players.get(TURNO).getSpecialist().size() + this.players.get(TURNO).getLAVs().size() + this.players.get(TURNO).getHeavies().size()), 0));
+                    //validando la vida de las unidades desplegadas (DEPRECADO)
+                    //activePlayer.setSquads(unitInteraction.squadMaintenance(activePlayer.getDeployedSquads()));
+                    //activePlayer.setSpecialist(unitInteraction.specialistQueueMaintenance(activePlayer.getDeployedSpecialist()));
 
                     //Realizando ajustes finales para iniciar un nuevo turno
                     menu = true;

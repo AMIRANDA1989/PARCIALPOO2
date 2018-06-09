@@ -632,18 +632,9 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
     }
 
     @Override
-    public int militaryBaseCurrentCapacity(ArrayList<MilitaryBuilding> playerBuildings, int currentUnits, int deployedUnits) {
-        int capTotal = 0;
-
-        //obteniendo la capacidad total
-        for (MilitaryBuilding f : playerBuildings) {
-            capTotal = capTotal + f.getCapacity();
-        }
-
-        //quitando de la capacidad total las unidades creadas y deployadas
-        capTotal = capTotal - (currentUnits + deployedUnits);
-
-        return capTotal;
+    public int militaryBaseCurrentCapacity(Player player) {
+        int result = player.getPlayerBaseMilitaryBuilding().getCapacity() * player.getMbs().size();
+        return result;
     }
 
     @Override

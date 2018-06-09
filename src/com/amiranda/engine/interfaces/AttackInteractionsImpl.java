@@ -10,6 +10,7 @@ import com.amiranda.parcial2.classes.core.Player;
 import com.amiranda.parcial2.classes.functional.buildings.ComandCenter;
 import com.amiranda.parcial2.classes.functional.buildings.Factory;
 import com.amiranda.parcial2.classes.functional.buildings.Market;
+import com.amiranda.parcial2.classes.functional.buildings.MilitaryBuilding;
 import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
 import com.amiranda.parcial2.classes.functional.units.HeavyVehicle;
 import com.amiranda.parcial2.classes.functional.units.LightVehicle;
@@ -26,6 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AttackInteractionsImpl implements AttackInteractions {
 
     UserInteractions userInteractions = new UserInteractionsImpl();
+    UnitInteractions unitInteractions = new UnitInteractionsImpl();
 
     boolean commandSetup = true;
 
@@ -50,6 +52,11 @@ public class AttackInteractionsImpl implements AttackInteractions {
         AttackCommand command = new AttackCommand();
 
         switch (userInteractions.attPhase1Menu()) {
+            case 0:
+                this.unitInteractions.checkActiveUnitsStats(attackingPlayer);
+                this.unitInteractions.checkDeployedUnitsSquadStats(attackingPlayer);
+                break;
+
             case 1: //atacar centro de mando enemigo
                 if (targetPlayer.getFactories().isEmpty() && targetPlayer.getMarkets().isEmpty() && targetPlayer.getMines().isEmpty() && targetPlayer.getMbs().isEmpty()) {
                     //validando que los edificios del oponenente (EN ESE MOMENTO) esten destruidos
@@ -106,6 +113,11 @@ public class AttackInteractionsImpl implements AttackInteractions {
         if (targetBuilding != AttackInteractions.CANCEL_ATTACK) {
             while (commandSetup) {
                 switch (userInteractions.attPhase2Menu()) {
+                    case 0:
+                        this.unitInteractions.checkActiveUnitsStats(attackingPlayer);
+                        this.unitInteractions.checkDeployedUnitsSquadStats(attackingPlayer);
+                        break;
+
                     case 1: //usar escuadrones para atacar
                         if (attPlayer.getSquads().isEmpty()) {
                             userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No tienes escuadrones disponibles!");
@@ -337,6 +349,11 @@ public class AttackInteractionsImpl implements AttackInteractions {
         int totalDamage = 0;
 
         Player result = target;
+        
+        ArrayList<Factory> newF = new ArrayList();
+        ArrayList<Market> newM = new ArrayList();
+        ArrayList<PowerMine> newP = new ArrayList();
+        ArrayList<MilitaryBuilding> newMB = new ArrayList();
         //ComandCenter newCC = target.getCc();
 
         String building = "";
@@ -418,41 +435,48 @@ public class AttackInteractionsImpl implements AttackInteractions {
                     case AttackInteractions.FACTORY:
                         for (Factory b : result.getFactories()) {
                             if (totalDamage >= 0) {
-                                tmpDamage = b.getHitpoints() - totalDamage;
                                 b.setHitpoints(b.getHitpoints() - totalDamage);
-
-                                if (tmpDamage < 0) {
-                                    totalDamage = tmpDamage * (-1);
-                                }
+                                newF.add(new Factory(b.getName(), b.getHitpoints(), b.getBuildTime(), b.getCapacity(), b.getProductionPerTurn(), b.getContents(), b.getMoneyPrice(), b.getEnergyPrice()));
+                                totalDamage = totalDamage - b.getHitpoints();
+                            }else{
+                                newF.add(b);
                             }
                         }
+                        result.setFactories(newF);
                         break;
                     case AttackInteractions.MARKET:
                         for (Market b : result.getMarkets()) {
                             if (totalDamage >= 0) {
-                                tmpDamage = b.getHitpoints() - totalDamage;
                                 b.setHitpoints(b.getHitpoints() - totalDamage);
-
-                                if (tmpDamage < 0) {
-                                    totalDamage = tmpDamage * (-1);
-                                }
+                                newM.add(new Market(b.getName(), b.getHitpoints(), b.getBuildTime(), b.getCapacity(), b.getProductionPerTurn(), b.getContents(), b.getMoneyPrice(), b.getEnergyPrice()));
+                                totalDamage = totalDamage - b.getHitpoints();
+                            }else{
+                                newM.add(b);
                             }
                         }
+                        result.setMarkets(newM);
                         break;
                     case AttackInteractions.POWER_MINE:
                         for (PowerMine b : result.getMines()) {
                             if (totalDamage >= 0) {
-                                tmpDamage = b.getHitpoints() - totalDamage;
-                                b.setHitpoints(b.getHitpoints() - totalDamage);
-
-                                if (tmpDamage < 0) {
-                                    totalDamage = tmpDamage * (-1);
-                                }
+                                newP.add(new PowerMine(b.getName(), b.getHitpoints(), b.getBuildTime(), b.getCapacity(), b.getProductionPerTurn(), b.getContents(), b.getMoneyPrice(), b.getEnergyPrice()));
+                                totalDamage = totalDamage - b.getHitpoints();
+                            }else{
+                                newP.add(b);
                             }
                         }
+                        result.setMines(newP);
                         break;
                     case AttackInteractions.MILITARY_BUILDING:
-                        building = target.getPlayerBaseMilitaryBuilding().getName();
+                        for (MilitaryBuilding b : result.getMbs()) {
+                            if (totalDamage >= 0) {
+                                newMB.add(new MilitaryBuilding(b.getName(), b.getHitpoints() - totalDamage, b.getCapacity(), b.getBuildTime(), b.getMoneyPrice(),b.getEnergyPrice()));
+                                totalDamage = totalDamage - b.getHitpoints();
+                            }else{
+                                newMB.add(b);
+                            }
+                        }
+                        result.setMbs(newMB);
                         break;
                 }
             }
@@ -536,7 +560,7 @@ public class AttackInteractionsImpl implements AttackInteractions {
             }
 
             totalDamage = squadDamage + specialistDamage + LAVDamage + heavyDamage;
-            int tmpDamage = 0; //sirve para saber si no ha sobrado daño despues de un ataque
+            int tmpDamage; //sirve para saber si no ha sobrado daño despues de un ataque
 
             for (AttackCommand a : attackers) {
 

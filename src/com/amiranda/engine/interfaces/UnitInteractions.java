@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public interface UnitInteractions {
     //valida que hayan suficientes fondos para crear una unidad
     public String buildApproval(int money, int energy, int moneyPrice, int energyPrice);
+    public boolean checkAvailableSpace(Player p);
     
     public Squad setupPlayerSquad(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost);
     public Specialist setupPlayerSpecialist(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost);
@@ -55,4 +56,7 @@ public interface UnitInteractions {
     public ArrayList<HeavyVehicle> heavyCleanQueue(ArrayList<HeavyVehicle> colaProd);
     public ArrayList<HeavyVehicle> heavyMaintenance(ArrayList<HeavyVehicle> playerUnit);
     
+    //checkear el estado de las unidades
+    public void checkActiveUnitsStats(Player player);
+    public void checkDeployedUnitsSquadStats(Player player);
 }

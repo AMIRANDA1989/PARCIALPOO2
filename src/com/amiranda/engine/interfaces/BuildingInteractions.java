@@ -60,7 +60,7 @@ public interface BuildingInteractions {
     public ArrayList<MilitaryBuilding> militaryBaseQueueProduction(ArrayList<MilitaryBuilding> colaProd, ArrayList<MilitaryBuilding> playerBuildings, MilitaryBuilding playerBaseBuilding);
     public ArrayList<MilitaryBuilding> militaryBaseCleanQueue(ArrayList<MilitaryBuilding> colaProd);
     public ArrayList<MilitaryBuilding> militaryBaseMaintenance(ArrayList<MilitaryBuilding> playerBuilding);
-    public int militaryBaseCurrentCapacity(ArrayList<MilitaryBuilding> playerBuildings, int currentUnits, int deployedUnits);
+    public int militaryBaseCurrentCapacity(Player player);
     
     //metodos para llenar de recursos los edificios
     public ArrayList<Factory> factoryFillResources(ArrayList<Factory> buildings);

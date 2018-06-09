@@ -5,6 +5,7 @@
  */
 package com.amiranda.engine.interfaces;
 
+import com.amiranda.parcial2.classes.core.AttackCommand;
 import com.amiranda.parcial2.classes.core.Player;
 import com.amiranda.parcial2.classes.functional.buildings.ComandCenter;
 import com.amiranda.parcial2.classes.functional.units.HeavyVehicle;
@@ -52,7 +53,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
         Specialist especialista = new Specialist(Name, hitpoints, attackPoints, buildTime, successRate, rawMaterialsCost, energyCost, moneyCost);
         return especialista;
     }
-    
+
     @Override
     public LightVehicle setupPlayerLAV(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost) {
         LightVehicle vehicle = new LightVehicle(Name, hitpoints, attackPoints, buildTime, successRate, rawMaterialsCost, energyCost, moneyCost);
@@ -76,7 +77,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
         Specialist especialista = new Specialist(baseUnit.getName(), baseUnit.getHitpoints(), baseUnit.getAttackPoints(), baseUnit.getBuildTime(), baseUnit.getSuccessRate(), baseUnit.getRawMaterialsCost(), baseUnit.getEnergyCost(), baseUnit.getMoneyCost());
         return especialista;
     }
-    
+
     @Override
     public LightVehicle createNewLAV(LightVehicle baseUnit) {
         LightVehicle vehiculo = new LightVehicle(baseUnit.getName(), baseUnit.getHitpoints(), baseUnit.getAttackPoints(), baseUnit.getBuildTime(), baseUnit.getSuccessRate(), baseUnit.getRawMaterialsCost(), baseUnit.getEnergyCost(), baseUnit.getMoneyCost());
@@ -98,7 +99,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
         ArrayList<Squad> pendingSquads = processedPlayer.getSquadConstruction();
         ArrayList<Specialist> pendingSpecialist = processedPlayer.getSpecialistConstruction();
-        
+
         ArrayList<LightVehicle> pendingLAVs = processedPlayer.getLAVConstruction();
         ArrayList<HeavyVehicle> pendingHeavies = processedPlayer.getHeavyConstruction();
 
@@ -110,41 +111,8 @@ public class UnitInteractionsImpl implements UnitInteractions {
         while (menu) {
             switch (userInteractions.unitConstructionMenu()) {
                 case 0: //Revisando fabricas activas
-                    System.out.println("---ESCUADRONES DISPONIBLES---");
-                    if (activeSquads.isEmpty()) {
-                        this.userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "No hay unidades disponibles.");
-                    } else {
-                        for (Squad f : activeSquads) {
-                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints());
-                        }
-                    }
-
-                    System.out.println("---ESPECIALISTA DISPONIBLES---");
-                    if (activeSquads.isEmpty()) {
-                        this.userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "No hay unidades disponibles.");
-                    } else {
-                        for (Specialist f : activeSpecialist) {
-                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints());
-                        }
-                    }
-
-                    System.out.println("---ESCUADRONES DESPLEGADOS---");
-                    if (activePlayer.getDeployedSquads().isEmpty()) {
-                        this.userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "No hay unidades disponibles.");
-                    } else {
-                        for (Squad f : activePlayer.getDeployedSquads()) {
-                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints());
-                        }
-                    }
-
-                    System.out.println("---ESPECIALISTA DESPLEGADO---");
-                    if (activePlayer.getDeployedSpecialist().isEmpty()) {
-                        this.userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "No hay unidades disponibles.");
-                    } else {
-                        for (Specialist f : activePlayer.getDeployedSpecialist()) {
-                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, f.getName() + "-> Vida: " + f.getHitpoints());
-                        }
-                    }
+                    this.checkActiveUnitsStats(activePlayer);
+                    this.checkDeployedUnitsSquadStats(activePlayer);
 
                     break;
 
@@ -169,38 +137,46 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
                 case 2: //Creando escuadron nuevo
                     userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseSquad().getName() + "Cuesta " + processedPlayer.getPlayerBaseSquad().getMoneyCost() + "de Dinero y " + processedPlayer.getPlayerBaseSquad().getRawMaterialsCost() + " de materia prima.");
-                    if (userInteractions.confirmAction()) {
-                        if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSquad().getMoneyCost(), processedPlayer.getPlayerBaseSquad().getRawMaterialsCost()).equals("YES")) {
-                            Squad newUnit = createNewSquad(processedPlayer.getPlayerBaseSquad());
-                            pendingSquads.add(newUnit);
-                            processedPlayer.setSquadConstruction(pendingSquads);
-                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseSquad().getMoneyCost());
-                            newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseSquad().getRawMaterialsCost());
-                        } else {
-                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSquad().getMoneyCost(), processedPlayer.getPlayerBaseSquad().getRawMaterialsCost()));
+                    if (this.checkAvailableSpace(activePlayer)) {
+                        if (userInteractions.confirmAction()) {
+                            if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSquad().getMoneyCost(), processedPlayer.getPlayerBaseSquad().getRawMaterialsCost()).equals("YES")) {
+                                Squad newUnit = createNewSquad(processedPlayer.getPlayerBaseSquad());
+                                pendingSquads.add(newUnit);
+                                processedPlayer.setSquadConstruction(pendingSquads);
+                                newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseSquad().getMoneyCost());
+                                newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseSquad().getRawMaterialsCost());
+                            } else {
+                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSquad().getMoneyCost(), processedPlayer.getPlayerBaseSquad().getRawMaterialsCost()));
+                            }
                         }
+                    } else {
+                        userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No hay espacio suficiente para esta unidad, construye mas bases militares");
                     }
                     break;
 
                 case 3: //entrenando un nuevo especialista
-                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseSquad().getName() + "Cuesta " + processedPlayer.getPlayerBaseSquad().getMoneyCost() + "de Dinero y " + processedPlayer.getPlayerBaseSquad().getRawMaterialsCost() + " de materia prima.");
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseSpecialist().getName() + "Cuesta " + processedPlayer.getPlayerBaseSpecialist().getMoneyCost() + "de Dinero y " + processedPlayer.getPlayerBaseSpecialist().getRawMaterialsCost() + " de materia prima.");
 
                     //Primero hay que validar que no hayan especialistas creados, desplegados o en proceso de creacion
-                    if (processedPlayer.getDeployedSpecialist().isEmpty() && processedPlayer.getSpecialist().isEmpty() && processedPlayer.getSpecialistConstruction().isEmpty()) {
-                        if (userInteractions.confirmAction()) {
-                            if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSpecialist().getMoneyCost(), processedPlayer.getPlayerBaseSpecialist().getRawMaterialsCost()).equals("YES")) {
-                                Specialist newUnit = createNewSpecialist(processedPlayer.getPlayerBaseSpecialist());
-                                pendingSpecialist.add(newUnit);
-                                processedPlayer.setSpecialistConstruction(pendingSpecialist);
-                                newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseSpecialist().getMoneyCost());
-                                newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseSpecialist().getRawMaterialsCost());
+                    if (this.checkAvailableSpace(activePlayer)) {
+                        if (processedPlayer.getDeployedSpecialist().isEmpty() && processedPlayer.getSpecialist().isEmpty() && processedPlayer.getSpecialistConstruction().isEmpty()) {
+                            if (userInteractions.confirmAction()) {
+                                if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSpecialist().getMoneyCost(), processedPlayer.getPlayerBaseSpecialist().getRawMaterialsCost()).equals("YES")) {
+                                    Specialist newUnit = createNewSpecialist(processedPlayer.getPlayerBaseSpecialist());
+                                    pendingSpecialist.add(newUnit);
+                                    processedPlayer.setSpecialistConstruction(pendingSpecialist);
+                                    newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseSpecialist().getMoneyCost());
+                                    newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseSpecialist().getRawMaterialsCost());
+                                } else {
+                                    userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSpecialist().getMoneyCost(), processedPlayer.getPlayerBaseSpecialist().getRawMaterialsCost()));
+                                }
                             } else {
-                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseSpecialist().getMoneyCost(), processedPlayer.getPlayerBaseSpecialist().getRawMaterialsCost()));
+                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "Ya existe un especialista activo, desplegado o en proceso de entrenamiento");
                             }
-                        }else{
-                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "Ya existe un especialista activo, desplegado o en proceso de entrenamiento");
+
                         }
-                            
+                    } else {
+                        userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No hay espacio suficiente para esta unidad, construye mas bases militares");
                     }
 
                     break;
@@ -210,14 +186,18 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
                     //Primero hay que validar que no hayan especialistas creados, desplegados o en proceso de creacion
                     if (userInteractions.confirmAction()) {
-                        if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()).equals("YES")) {
-                            LightVehicle newUnit = createNewLAV(processedPlayer.getPlayerBaseLAV());
-                            pendingLAVs.add(newUnit);
-                            processedPlayer.setLAVConstruction(pendingLAVs);
-                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseLAV().getMoneyCost());
-                            newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseLAV().getRawMaterialsCost());
+                        if (this.checkAvailableSpace(activePlayer)) {
+                            if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()).equals("YES")) {
+                                LightVehicle newUnit = createNewLAV(processedPlayer.getPlayerBaseLAV());
+                                pendingLAVs.add(newUnit);
+                                processedPlayer.setLAVConstruction(pendingLAVs);
+                                newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseLAV().getMoneyCost());
+                                newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseLAV().getRawMaterialsCost());
+                            } else {
+                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()));
+                            }
                         } else {
-                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()));
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No hay espacio suficiente para esta unidad, construye mas bases militares");
                         }
                     }
 
@@ -228,14 +208,18 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
                     //Primero hay que validar que no hayan especialistas creados, desplegados o en proceso de creacion
                     if (userInteractions.confirmAction()) {
-                        if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseHeavy().getMoneyCost(), processedPlayer.getPlayerBaseHeavy().getRawMaterialsCost()).equals("YES")) {
-                            HeavyVehicle newUnit = createNewHeavy(processedPlayer.getPlayerBaseHeavy());
-                            pendingHeavies.add(newUnit);
-                            processedPlayer.setHeavyConstruction(pendingHeavies);
-                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseHeavy().getMoneyCost());
-                            newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseHeavy().getRawMaterialsCost());
+                        if (this.checkAvailableSpace(activePlayer)) {
+                            if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseHeavy().getMoneyCost(), processedPlayer.getPlayerBaseHeavy().getRawMaterialsCost()).equals("YES")) {
+                                HeavyVehicle newUnit = createNewHeavy(processedPlayer.getPlayerBaseHeavy());
+                                pendingHeavies.add(newUnit);
+                                processedPlayer.setHeavyConstruction(pendingHeavies);
+                                newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseHeavy().getMoneyCost());
+                                newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseHeavy().getRawMaterialsCost());
+                            } else {
+                                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()));
+                            }
                         } else {
-                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()));
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No hay espacio suficiente para esta unidad, construye mas bases militares");
                         }
                     }
 
@@ -286,7 +270,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
                 result.add(f);
             }
         }
-        
+
         return result;
     }
 
@@ -341,7 +325,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
                 result.add(f);
             }
         }
-        
+
         return result;
     }
 
@@ -396,7 +380,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
                 result.add(f);
             }
         }
-        
+
         return result;
     }
 
@@ -451,7 +435,7 @@ public class UnitInteractionsImpl implements UnitInteractions {
                 result.add(f);
             }
         }
-        
+
         return result;
     }
 
@@ -461,17 +445,102 @@ public class UnitInteractionsImpl implements UnitInteractions {
         for (HeavyVehicle f : playerUnit) {
             //Reduciendo en 1 el tiempo de turno de construccion
             if (f.getHitpoints() <= 0) {
-                userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+                userInteractions.showMessage(UserInteractionsImpl.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
             } else {
                 result.add(f);
             }
         }
 
         return result;
-    }  
+    }
 
-    
+    @Override
+    public void checkActiveUnitsStats(Player player) {
+        System.out.print("--ESCUADRONES DISPONIBLES--");
+        if (!(player.getSquads().isEmpty())) {
+            for (Squad a : player.getSquads()) {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + a.getName() + " Vida: " + a.getHitpoints() + " Ataque: " + a.getAttackPoints() + "Efectividad de combate: " + a.getSuccessRate() + "%");
+            }
+        } else {
+            userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+        }
 
-    
+        System.out.print("--ESPECIALISTAS DISPONIBLES--");
+        if (!(player.getSpecialist().isEmpty())) {
+            for (Specialist a : player.getSpecialist()) {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + a.getName() + " Vida: " + a.getHitpoints() + " Ataque: " + a.getAttackPoints() + "Efectividad de combate: " + a.getSuccessRate() + "%");
+            }
+        } else {
+            userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+        }
+
+        System.out.print("--VEHICULOS LIVIANOS DISPONIBLES--");
+        if (!(player.getLAVs().isEmpty())) {
+            for (LightVehicle a : player.getLAVs()) {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + a.getName() + " Vida: " + a.getHitpoints() + " Ataque: " + a.getAttackPoints() + "Efectividad de combate: " + a.getSuccessRate() + "%");
+            }
+        } else {
+            userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+        }
+
+        System.out.print("--VEHICULOS PESADOS DISPONIBLES--");
+        if (!(player.getHeavies().isEmpty())) {
+            for (HeavyVehicle a : player.getHeavies()) {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + a.getName() + " Vida: " + a.getHitpoints() + " Ataque: " + a.getAttackPoints() + "Efectividad de combate: " + a.getSuccessRate() + "%");
+            }
+        } else {
+            userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+        }
+
+    }
+
+    @Override
+    public void checkDeployedUnitsSquadStats(Player player) {
+        for (AttackCommand a : player.getAttackCommands()) {
+            System.out.print("--ESCUADRONES DESPLEGADOS--");
+            if (!(a.getDeployedSquads().isEmpty())) {
+                for (Squad b : a.getDeployedSquads()) {
+                    userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + b.getName() + " Vida: " + b.getHitpoints() + " Ataque: " + b.getAttackPoints() + "Efectividad de combate: " + b.getSuccessRate() + "%");
+                }
+            } else {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+            }
+
+            System.out.print("--ESPECIALISTAS DESPLEGADOS--");
+            if (!(a.getDeployedSpecialist().isEmpty())) {
+                for (Specialist b : a.getDeployedSpecialist()) {
+                    userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + b.getName() + " Vida: " + b.getHitpoints() + " Ataque: " + b.getAttackPoints() + "Efectividad de combate: " + b.getSuccessRate() + "%");
+                }
+            } else {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+            }
+
+            System.out.print("--VEHICULOS LIVIANOS DESPLEGADOS--");
+            if (!(a.getDeployedLAV().isEmpty())) {
+                for (LightVehicle b : a.getDeployedLAV()) {
+                    userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + b.getName() + " Vida: " + b.getHitpoints() + " Ataque: " + b.getAttackPoints() + "Efectividad de combate: " + b.getSuccessRate() + "%");
+                }
+            } else {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+            }
+
+            System.out.print("--VEHICULOS PESADOS DESPLEGADOS--");
+            if (!(a.getDeployedHeavy().isEmpty())) {
+                for (HeavyVehicle b : a.getDeployedHeavy()) {
+                    userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "" + b.getName() + " Vida: " + b.getHitpoints() + " Ataque: " + b.getAttackPoints() + "Efectividad de combate: " + b.getSuccessRate() + "%");
+                }
+            } else {
+                userInteractions.showMessage(UserInteractionsImpl.INFO_MESSAGE, "No hay unidades entrenadas");
+            }
+        }
+    }
+
+    @Override
+    public boolean checkAvailableSpace(Player p) {
+        int usedSpace;
+        usedSpace = p.getSquadConstruction().size() + p.getSquads().size() + p.getSpecialist().size() + p.getLAVConstruction().size() + p.getLAVs().size() + p.getHeavies().size() + p.getHeavyConstruction().size();
+
+        return p.getCc().getUnitCapacity() > usedSpace;
+    }
 
 }
