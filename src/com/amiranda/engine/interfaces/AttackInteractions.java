@@ -43,4 +43,7 @@ public interface AttackInteractions {
    
    /*Resolviendo ataque exitoso*/
    public boolean attackSuccessful(int successRate);
+   
+   //Ejecutando la defensa
+   public ArrayList<AttackCommand> resistAttack(Player defender, ArrayList<AttackCommand> attackers);
 }

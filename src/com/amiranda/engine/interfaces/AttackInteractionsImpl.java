@@ -171,8 +171,7 @@ public class AttackInteractionsImpl implements AttackInteractions {
                             attPlayer.setSpecialist(remainingSpecialist);
                             attPlayer.setLAVs(remainingLAVs);
                             attPlayer.setHeavies(remainingHeavies);
-                            
-                            
+
                             //attCommands.add(command);
                             attCommands = attPlayer.getAttackCommands();
                             attCommands.add(command);
@@ -315,7 +314,7 @@ public class AttackInteractionsImpl implements AttackInteractions {
             if (a.getAttackTime() != 0) {
                 a.setAttackTime(a.getAttackTime() - 1);
                 result.add(a);
-            }else{
+            } else {
                 result.add(a);
             }
         }
@@ -469,6 +468,148 @@ public class AttackInteractionsImpl implements AttackInteractions {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public ArrayList<AttackCommand> resistAttack(Player defender, ArrayList<AttackCommand> attackers) {
+        int totalDamage = 0;
+        int specialistDamage = 0;
+        int LAVDamage = 0;
+        int heavyDamage = 0;
+        int squadDamage = 0;
+        AttackCommand nuevo = new AttackCommand();
+
+        ArrayList<Specialist> newSpec = new ArrayList();
+        ArrayList<Squad> newSquad = new ArrayList();
+        ArrayList<LightVehicle> newLAV = new ArrayList();
+        ArrayList<HeavyVehicle> newHeavy = new ArrayList();
+
+        System.out.println("**LLAMANDO A TODAS LAS UNIDADES A DEFENDER LA BASE**");
+        ArrayList<AttackCommand> result = new ArrayList();
+
+        if (!(attackers.isEmpty())) {
+            for (AttackCommand a : attackers) {
+                //procesando los escuadrones
+                for (Squad s : defender.getSquads()) {
+                    //Solo las unidades con vida pueden atacar
+                    if (s.getHitpoints() > 0) {
+                        if (attackSuccessful(s.getSuccessRate())) {
+                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un enemigo");
+                            squadDamage = squadDamage + s.getAttackPoints();
+                        } else {
+                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de defender");
+                        }
+
+                    }
+                }
+
+                //procesando los especialistas
+                for (Specialist s : a.getDeployedSpecialist()) {
+                    if (attackSuccessful(s.getSuccessRate())) {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un enemigo");
+                        specialistDamage = squadDamage + s.getAttackPoints();
+                    } else {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de defender");
+                    }
+                }
+
+                //procesando los vehiculos livianos
+                for (LightVehicle s : a.getDeployedLAV()) {
+                    if (attackSuccessful(s.getSuccessRate())) {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un enemigo");
+                        LAVDamage = squadDamage + s.getAttackPoints();
+                    } else {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de defender");
+                    }
+                }
+
+                //procesando los vehiculos pesados
+                for (HeavyVehicle s : a.getDeployedHeavy()) {
+                    if (attackSuccessful(s.getSuccessRate())) {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un enemigo");
+                        heavyDamage = squadDamage + s.getAttackPoints();
+                    } else {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de defender");
+                    }
+                }
+
+            }
+
+            totalDamage = squadDamage + specialistDamage + LAVDamage + heavyDamage;
+            int tmpDamage = 0; //sirve para saber si no ha sobrado daño despues de un ataque
+
+            for (AttackCommand a : attackers) {
+
+                nuevo = new AttackCommand();
+                nuevo.setAttackTime(0);
+                nuevo.setTarget(a.getTarget());
+
+                //los especialistas son prioridad
+                for (Specialist s : a.getDeployedSpecialist()) {
+                    if (s.getHitpoints() > 0) {
+                        tmpDamage = s.getHitpoints() - totalDamage;
+                        s.setHitpoints(s.getHitpoints() - totalDamage);
+
+                        newSpec.add(s);
+
+                        if (tmpDamage < 0) {
+                            totalDamage = tmpDamage * (-1);
+                        }
+                    }
+                }
+
+                //segunda prioridad vehiculos pesados
+                for (HeavyVehicle s : a.getDeployedHeavy()) {
+                    if (s.getHitpoints() > 0) {
+                        tmpDamage = s.getHitpoints() - totalDamage;
+                        s.setHitpoints(s.getHitpoints() - totalDamage);
+
+                        newHeavy.add(s);
+
+                        if (tmpDamage < 0) {
+                            totalDamage = tmpDamage * (-1);
+                        }
+                    }
+                }
+
+                //tercera prioridad vehiculos livianos
+                for (LightVehicle s : a.getDeployedLAV()) {
+                    if (s.getHitpoints() > 0) {
+                        tmpDamage = s.getHitpoints() - totalDamage;
+                        s.setHitpoints(s.getHitpoints() - totalDamage);
+
+                        newLAV.add(s);
+
+                        if (tmpDamage < 0) {
+                            totalDamage = tmpDamage * (-1);
+                        }
+                    }
+                }
+
+                //cuarta prioridad escuadrones
+                for (Squad s : a.getDeployedSquads()) {
+                    if (s.getHitpoints() > 0) {
+                        tmpDamage = s.getHitpoints() - totalDamage;
+                        s.setHitpoints(s.getHitpoints() - totalDamage);
+
+                        newSquad.add(s);
+
+                        if (tmpDamage < 0) {
+                            totalDamage = tmpDamage * (-1);
+                        }
+                    }
+                }
+
+                nuevo.setDeployedSpecialist(newSpec);
+                nuevo.setDeployedHeavy(newHeavy);
+                nuevo.setDeployedLAV(newLAV);
+                nuevo.setDeployedSquads(newSquad);
+                result.add(nuevo);
+            }
+        } else {
+            System.out.println("No hay unidades atacando");
+        }
+        return result;
     }
 
 }

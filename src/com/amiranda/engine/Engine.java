@@ -468,8 +468,8 @@ public class Engine {
                                 activePlayer = this.attackInteraction.attackOperations(activePlayer, this.players.get(jugadorInactivo));
                                 break;
 
-                            case 7:
-                                menu = false;
+                            case 7: //defender la base
+                                this.players.get(jugadorInactivo).setAttackCommands(attackInteraction.resistAttack(activePlayer, this.players.get(jugadorInactivo).getAttackCommands()));
                                 break;
 
                             case 8:
@@ -482,6 +482,8 @@ public class Engine {
 
                         }
                     }
+                    
+                    
 
                     /*
                     FASE DE MANTENIMIENTO FINAL
