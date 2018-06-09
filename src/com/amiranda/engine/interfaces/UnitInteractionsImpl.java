@@ -52,6 +52,18 @@ public class UnitInteractionsImpl implements UnitInteractions {
         Specialist especialista = new Specialist(Name, hitpoints, attackPoints, buildTime, successRate, rawMaterialsCost, energyCost, moneyCost);
         return especialista;
     }
+    
+    @Override
+    public LightVehicle setupPlayerLAV(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost) {
+        LightVehicle vehicle = new LightVehicle(Name, hitpoints, attackPoints, buildTime, successRate, rawMaterialsCost, energyCost, moneyCost);
+        return vehicle;
+    }
+
+    @Override
+    public HeavyVehicle setupPlayerHeavy(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost) {
+        HeavyVehicle vehicle = new HeavyVehicle(Name, hitpoints, attackPoints, buildTime, successRate, rawMaterialsCost, energyCost, moneyCost);
+        return vehicle;
+    }
 
     @Override
     public Squad createNewSquad(Squad baseUnit) {
@@ -64,6 +76,18 @@ public class UnitInteractionsImpl implements UnitInteractions {
         Specialist especialista = new Specialist(baseUnit.getName(), baseUnit.getHitpoints(), baseUnit.getAttackPoints(), baseUnit.getBuildTime(), baseUnit.getSuccessRate(), baseUnit.getRawMaterialsCost(), baseUnit.getEnergyCost(), baseUnit.getMoneyCost());
         return especialista;
     }
+    
+    @Override
+    public LightVehicle createNewLAV(LightVehicle baseUnit) {
+        LightVehicle vehiculo = new LightVehicle(baseUnit.getName(), baseUnit.getHitpoints(), baseUnit.getAttackPoints(), baseUnit.getBuildTime(), baseUnit.getSuccessRate(), baseUnit.getRawMaterialsCost(), baseUnit.getEnergyCost(), baseUnit.getMoneyCost());
+        return vehiculo;
+    }
+
+    @Override
+    public HeavyVehicle createNewHeavy(HeavyVehicle baseUnit) {
+        HeavyVehicle vehiculo = new HeavyVehicle(baseUnit.getName(), baseUnit.getHitpoints(), baseUnit.getAttackPoints(), baseUnit.getBuildTime(), baseUnit.getSuccessRate(), baseUnit.getRawMaterialsCost(), baseUnit.getEnergyCost(), baseUnit.getMoneyCost());
+        return vehiculo;
+    }
 
     @Override
     public Player unitOperations(Player activePlayer) {
@@ -74,6 +98,9 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
         ArrayList<Squad> pendingSquads = processedPlayer.getSquadConstruction();
         ArrayList<Specialist> pendingSpecialist = processedPlayer.getSpecialistConstruction();
+        
+        ArrayList<LightVehicle> pendingLAVs = processedPlayer.getLAVConstruction();
+        ArrayList<HeavyVehicle> pendingHeavies = processedPlayer.getHeavyConstruction();
 
         ArrayList<Squad> tmpSquad = new ArrayList();
         ArrayList<Specialist> tmpSpecialist = new ArrayList();
@@ -179,10 +206,38 @@ public class UnitInteractionsImpl implements UnitInteractions {
                     break;
 
                 case 4: //entrenando un nuevo vehiculo liviano
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseLAV().getName() + "Cuesta " + processedPlayer.getPlayerBaseLAV().getMoneyCost() + "de Dinero y " + processedPlayer.getPlayerBaseLAV().getRawMaterialsCost() + " de materia prima.");
+
+                    //Primero hay que validar que no hayan especialistas creados, desplegados o en proceso de creacion
+                    if (userInteractions.confirmAction()) {
+                        if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()).equals("YES")) {
+                            LightVehicle newUnit = createNewLAV(processedPlayer.getPlayerBaseLAV());
+                            pendingLAVs.add(newUnit);
+                            processedPlayer.setLAVConstruction(pendingLAVs);
+                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseLAV().getMoneyCost());
+                            newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseLAV().getRawMaterialsCost());
+                        } else {
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()));
+                        }
+                    }
 
                     break;
 
                 case 5: //entrenando un nuevo vehiculo pesado
+                    userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Un " + processedPlayer.getPlayerBaseHeavy().getName() + "Cuesta " + processedPlayer.getPlayerBaseHeavy().getMoneyCost() + "de Dinero y " + processedPlayer.getPlayerBaseHeavy().getRawMaterialsCost() + " de materia prima.");
+
+                    //Primero hay que validar que no hayan especialistas creados, desplegados o en proceso de creacion
+                    if (userInteractions.confirmAction()) {
+                        if (buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseHeavy().getMoneyCost(), processedPlayer.getPlayerBaseHeavy().getRawMaterialsCost()).equals("YES")) {
+                            HeavyVehicle newUnit = createNewHeavy(processedPlayer.getPlayerBaseHeavy());
+                            pendingHeavies.add(newUnit);
+                            processedPlayer.setHeavyConstruction(pendingHeavies);
+                            newCC.setMoneyQty(newCC.getMoneyQty() - processedPlayer.getPlayerBaseHeavy().getMoneyCost());
+                            newCC.setRawMaterialQty(newCC.getRawMaterialQty() - processedPlayer.getPlayerBaseHeavy().getRawMaterialsCost());
+                        } else {
+                            userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, buildApproval(processedPlayer.getCc().getMoneyQty(), processedPlayer.getCc().getRawMaterialQty(), processedPlayer.getPlayerBaseLAV().getMoneyCost(), processedPlayer.getPlayerBaseLAV().getRawMaterialsCost()));
+                        }
+                    }
 
                     break;
 
@@ -307,42 +362,116 @@ public class UnitInteractionsImpl implements UnitInteractions {
 
     @Override
     public ArrayList<LightVehicle> lavQueueMaintenance(ArrayList<LightVehicle> colaProd) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<LightVehicle> result = new ArrayList();
+        int progress;
+        for (LightVehicle f : colaProd) {
+            progress = f.getBuildProgress();
+            progress--;
+            f.setBuildProgress(progress);
+            result.add(f);
+        }
+        return result;
     }
 
     @Override
     public ArrayList<LightVehicle> lavQueueProduction(ArrayList<LightVehicle> colaProd, ArrayList<LightVehicle> playerUnits, LightVehicle playerBaseUnit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<LightVehicle> result = playerUnits;
+        LightVehicle newUnit;
+        newUnit = this.createNewLAV(playerBaseUnit);
+        for (LightVehicle f : colaProd) {
+            if (f.getBuildProgress() <= 0) {
+                result.add(newUnit);
+                userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseUnit.getName());
+            }
+        }
+
+        return result;
     }
 
     @Override
     public ArrayList<LightVehicle> lavCleanQueue(ArrayList<LightVehicle> colaProd) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<LightVehicle> result = new ArrayList();
+        for (LightVehicle f : colaProd) {
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
+            }
+        }
+        
+        return result;
     }
 
     @Override
     public ArrayList<LightVehicle> lavMaintenance(ArrayList<LightVehicle> playerUnit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<LightVehicle> result = new ArrayList();
+        for (LightVehicle f : playerUnit) {
+            //Reduciendo en 1 el tiempo de turno de construccion
+            if (f.getHitpoints() <= 0) {
+                userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+            } else {
+                result.add(f);
+            }
+        }
+
+        return result;
     }
 
     @Override
     public ArrayList<HeavyVehicle> heavyQueueMaintenance(ArrayList<HeavyVehicle> colaProd) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<HeavyVehicle> result = new ArrayList();
+        int progress;
+        for (HeavyVehicle f : colaProd) {
+            progress = f.getBuildProgress();
+            progress--;
+            f.setBuildProgress(progress);
+            result.add(f);
+        }
+        return result;
     }
 
     @Override
     public ArrayList<HeavyVehicle> heavyQueueProduction(ArrayList<HeavyVehicle> colaProd, ArrayList<HeavyVehicle> playerUnits, HeavyVehicle playerBaseUnit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<HeavyVehicle> result = playerUnits;
+        HeavyVehicle newUnit;
+        newUnit = this.createNewHeavy(playerBaseUnit);
+        for (HeavyVehicle f : colaProd) {
+            if (f.getBuildProgress() <= 0) {
+                result.add(newUnit);
+                userInteractions.showMessage(userInteractions.INFO_MESSAGE, "Se ha finalizado la construccion de " + playerBaseUnit.getName());
+            }
+        }
+
+        return result;
     }
 
     @Override
     public ArrayList<HeavyVehicle> heavyCleanQueue(ArrayList<HeavyVehicle> colaProd) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<HeavyVehicle> result = new ArrayList();
+        for (HeavyVehicle f : colaProd) {
+            if (!(f.getBuildProgress() <= 0)) {
+                result.add(f);
+            }
+        }
+        
+        return result;
     }
 
     @Override
     public ArrayList<HeavyVehicle> heavyMaintenance(ArrayList<HeavyVehicle> playerUnit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        ArrayList<HeavyVehicle> result = new ArrayList();
+        for (HeavyVehicle f : playerUnit) {
+            //Reduciendo en 1 el tiempo de turno de construccion
+            if (f.getHitpoints() <= 0) {
+                userInteractions.showMessage(userInteractions.ALERT_MESSAGE, "Tu " + f.getName() + " ha sido destruida");
+            } else {
+                result.add(f);
+            }
+        }
+
+        return result;
+    }  
+
+    
+
+    
 
 }

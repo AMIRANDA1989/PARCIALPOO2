@@ -10,6 +10,8 @@ import com.amiranda.parcial2.classes.functional.buildings.Factory;
 import com.amiranda.parcial2.classes.functional.buildings.Market;
 import com.amiranda.parcial2.classes.functional.buildings.MilitaryBuilding;
 import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
+import com.amiranda.parcial2.classes.functional.units.HeavyVehicle;
+import com.amiranda.parcial2.classes.functional.units.LightVehicle;
 import com.amiranda.parcial2.classes.functional.units.Specialist;
 import com.amiranda.parcial2.classes.functional.units.Squad;
 import java.util.ArrayList;
@@ -45,13 +47,21 @@ public class Player {
     //Unidades que tiene el jugador
     private Squad playerBaseSquad; //Unidad básica que manejará el jugador
     private Specialist playerBaseSpecialist; //especialista básico que manejará el jugador
+    private LightVehicle playerBaseLAV;
+    private HeavyVehicle playerBaseHeavy;
     private ArrayList<Squad> squads = new ArrayList();
     private ArrayList<Specialist> specialist = new ArrayList();  
     private ArrayList<Squad> deployedSquads = new ArrayList();
     private ArrayList<Specialist> deployedSpecialist = new ArrayList();
     private ArrayList<Squad> squadConstruction = new ArrayList();
     private ArrayList<Specialist> specialistConstruction = new ArrayList();
-    
+    private ArrayList<LightVehicle> LAVs = new ArrayList();
+    private ArrayList<HeavyVehicle> Heavies = new ArrayList();
+    private ArrayList<LightVehicle> LAVConstruction = new ArrayList();
+    private ArrayList<HeavyVehicle> HeavyConstruction = new ArrayList();
+     
+    //Ordenes de ataque del jugador
+    private ArrayList<AttackCommand> attackCommands;
     
 
     public Player(String name, int raceCode, ComandCenter cc) {
@@ -287,6 +297,62 @@ public class Player {
 
     public void setSpecialistConstruction(ArrayList<Specialist> specialistConstruction) {
         this.specialistConstruction = specialistConstruction;
+    }
+
+    public ArrayList<AttackCommand> getAttackCommands() {
+        return attackCommands;
+    }
+
+    public void setAttackCommands(ArrayList<AttackCommand> attackCommands) {
+        this.attackCommands = attackCommands;
+    }
+
+    public ArrayList<LightVehicle> getLAVs() {
+        return LAVs;
+    }
+
+    public void setLAVs(ArrayList<LightVehicle> LAVs) {
+        this.LAVs = LAVs;
+    }
+
+    public ArrayList<HeavyVehicle> getHeavies() {
+        return Heavies;
+    }
+
+    public void setHeavies(ArrayList<HeavyVehicle> Heavies) {
+        this.Heavies = Heavies;
+    }
+
+    public LightVehicle getPlayerBaseLAV() {
+        return playerBaseLAV;
+    }
+
+    public void setPlayerBaseLAV(LightVehicle playerBaseLAV) {
+        this.playerBaseLAV = playerBaseLAV;
+    }
+
+    public HeavyVehicle getPlayerBaseHeavy() {
+        return playerBaseHeavy;
+    }
+
+    public void setPlayerBaseHeavy(HeavyVehicle playerBaseHeavy) {
+        this.playerBaseHeavy = playerBaseHeavy;
+    }
+
+    public ArrayList<LightVehicle> getLAVConstruction() {
+        return LAVConstruction;
+    }
+
+    public void setLAVConstruction(ArrayList<LightVehicle> LAVConstruction) {
+        this.LAVConstruction = LAVConstruction;
+    }
+
+    public ArrayList<HeavyVehicle> getHeavyConstruction() {
+        return HeavyConstruction;
+    }
+
+    public void setHeavyConstruction(ArrayList<HeavyVehicle> HeavyConstruction) {
+        this.HeavyConstruction = HeavyConstruction;
     }
     
     

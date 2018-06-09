@@ -156,7 +156,7 @@ public class UserInteractionsImpl implements UserInteractions {
 
                 case "7":
                     return 7;
-                    
+
                 case "8":
                     return 7;
 
@@ -367,19 +367,234 @@ public class UserInteractionsImpl implements UserInteractions {
 
                 case "4":
                     return 4;
+
+                case "5":
+                    return 5;
+
+                case "6":
+                    return 6;
+
+                default:
+                    this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
+                    break;
+            }
+        }
+        return 6;
+    }
+
+    @Override
+    public int attackMenu() {
+        boolean validator = true;
+        String option;
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("PLANIFICACION DE ATAQUE");
+            System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
+            System.out.println("0 - Consultar estado de mis Unidades activas.");
+            System.out.println("1 - Preparar unidades para el ataque");
+            System.out.println("2 - regresar.");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "0":
+                    return 0;
+
+                case "1":
+                    return 1;
+
+                case "2":
+                    return 2;
+
+                default:
+                    this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
+                    break;
+            }
+        }
+        return 2;
+    }
+
+    @Override
+    public int defendMenu() {
+        boolean validator = true;
+        String option;
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("PLANIFICACION DE DEFENSA");
+            System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
+            System.out.println("0 - Consultar estado de mis Unidades activas.");
+            System.out.println("1 - Desplegar unidades para la defensa");
+            System.out.println("2 - regresar.");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "0":
+                    return 0;
+
+                case "1":
+                    return 1;
+
+                case "2":
+                    return 2;
+
+                default:
+                    this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
+                    break;
+            }
+        }
+        return 2;
+
+    }
+
+    @Override
+    public int defineAttackMenu() {
+        boolean validator = true;
+        String option;
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("PLANIFICACION DE ATAQUE");
+            System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
+            System.out.println("0 - Consultar estado de mis Unidades activas.");
+            System.out.println("1 - Desplegar unidades para la defensa");
+            System.out.println("2 - regresar.");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "0":
+                    return 0;
+
+                case "1":
+                    return 1;
+
+                case "2":
+                    return 2;
+
+                default:
+                    this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
+                    break;
+            }
+        }
+        return 2;
+    }
+
+    @Override
+    public int attPhase1Menu() {
+        boolean validator = true;
+        String option;
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("PLANIFICACION DE ATAQUE");
+            System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
+            System.out.println("0 - Consultar estado de mis Unidades activas.");
+            System.out.println("1 - Atacar Centro de Mando enemigo.");
+            System.out.println("2 - Atacar Fabricas del enemigo.");
+            System.out.println("3 - Atacar Mercados del enemigo.");
+            System.out.println("4 - Atacar Bases Militares del enemigo.");
+            System.out.println("5 - Cancelar y volver a menu principal.");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "0":
+                    return 0;
+
+                case "1":
+                    return 1;
+
+                case "2":
+                    return 2;
+                    
+                case "3":
+                    return 3;
+                    
+                case "4":
+                    return 4;
+                    
+                case "5":
+                    return 5;
+
+                default:
+                    this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
+                    break;
+            }
+        }
+        return 5;
+    }
+
+    @Override
+    public int attPhase2Menu() {
+        boolean validator = true;
+        String option;
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("PLANIFICACION DE ATAQUE FASE 2 (Seleccion de unidades)");
+            System.out.println("Elige la accion que deseas realizar (ingresa el numero)");
+            System.out.println("0 - Consultar estado de mis Unidades activas.");
+            System.out.println("1 - Desplegar Escuadrones");
+            System.out.println("2 - Desplegar Especialista.");
+            System.out.println("3 - Desplegar vehiculos livianos.");
+            System.out.println("4 - Desplegar vehiculos pesados.");
+            System.out.println("5 - Confirmar Ataque");
+            System.out.println("6 - Cancelar Ataque");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "0":
+                    return 0;
+
+                case "1":
+                    return 1;
+
+                case "2":
+                    return 2;
+                    
+                case "3":
+                    return 3;
+                    
+                case "4":
+                    return 4;
                     
                 case "5":
                     return 5;
                     
                 case "6":
                     return 6;
-                    
+
                 default:
                     this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
                     break;
             }
         }
-        return 4;
+        return 5;
+    }
+
+    @Override
+    public int pickAttackingUnits(int availableUnits) {
+        String option;
+        
+        this.showMessage(UserInteractions.INFO_MESSAGE, "Tienes " + availableUnits + " disponibles para el ataque");
+        System.out.print("Con cuantas unidades deseas atacar?");
+        option = in.nextLine();
+        
+        if(Integer.parseInt(option) > availableUnits){
+            this.showMessage(UserInteractions.ERROR_MESSAGE, "La cantidad ingresada no concuerda con las unidades disponibles");
+            return -1;
+        }else{
+            return Integer.parseInt(option);
+        }
     }
 
 }

@@ -39,4 +39,16 @@ public interface UserInteractions {
     public int militaryBaseMenu();
     
     public int unitConstructionMenu();
+    
+    public int attPhase1Menu();
+    
+    public int attPhase2Menu();
+    
+    public int pickAttackingUnits(int availableUnits);
+    
+    public int attackMenu();
+    
+    public int defineAttackMenu();
+    
+    public int defendMenu();
 }

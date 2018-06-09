@@ -22,8 +22,12 @@ public interface UnitInteractions {
     
     public Squad setupPlayerSquad(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost);
     public Specialist setupPlayerSpecialist(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost);
+    public LightVehicle setupPlayerLAV(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost);
+    public HeavyVehicle setupPlayerHeavy(String Name, int hitpoints, int attackPoints, int buildTime, int successRate, int rawMaterialsCost, int energyCost, int moneyCost);
     public Squad createNewSquad(Squad baseUnit);
     public Specialist createNewSpecialist(Specialist baseUnit);
+    public LightVehicle createNewLAV(LightVehicle baseUnit);
+    public HeavyVehicle createNewHeavy(HeavyVehicle baseUnit);
     
     public Player unitOperations(Player activePlayer);
     
@@ -50,4 +54,5 @@ public interface UnitInteractions {
     public ArrayList<HeavyVehicle> heavyQueueProduction(ArrayList<HeavyVehicle> colaProd, ArrayList<HeavyVehicle> playerUnits, HeavyVehicle playerBaseUnit);
     public ArrayList<HeavyVehicle> heavyCleanQueue(ArrayList<HeavyVehicle> colaProd);
     public ArrayList<HeavyVehicle> heavyMaintenance(ArrayList<HeavyVehicle> playerUnit);
+    
 }
