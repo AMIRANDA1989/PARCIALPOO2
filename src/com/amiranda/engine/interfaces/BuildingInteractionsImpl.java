@@ -682,4 +682,56 @@ public class BuildingInteractionsImpl implements BuildingInteractions {
         return result;
     }
 
+    @Override
+    public Player ccOperations(Player activePlayer) {
+        boolean menu = true;
+        Player processedPlayer = activePlayer;
+        ComandCenter newCC = activePlayer.getCc();
+
+        while (menu) {
+            switch (userInteractions.ccMenu()) {
+                case 1: //Revisando estado del cc
+                    this.userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Tu centro de control tiene " + activePlayer.getCc().getHitpoints() + " puntos de vida");
+                    break;
+
+                case 2: //mejorar cc
+                    newCC = upgradeCC(newCC);
+                    break;
+
+                case 3: //Saliendo del menu de fabricas
+                    menu = false;
+                    break;
+            }
+        }
+
+        return processedPlayer;
+    }
+
+    @Override
+    public ComandCenter upgradeCC(ComandCenter cc) {
+        ComandCenter result = cc;
+        int total = (int)((cc.getMoneyCapacity() + cc.getRawMaterialsCapacity() + cc.getEnergyCapacity()) * 0.25)/3;
+        
+        userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "Mejorar tu centro de control costará " + total + " de cada recurso, deseas continuar?");
+        
+        if(this.userInteractions.confirmAction()){
+            if((cc.getMoneyQty()- total >= 0) && (cc.getEnergyQty()- total >= 0) && (cc.getRawMaterialQty()- total >= 0)){
+                result.setMoneyQty(cc.getMoneyQty()- total);
+                result.setEnergyQty(cc.getEnergyQty()- total);
+                result.setRawMaterialsCapacity(cc.getRawMaterialQty()- total);
+                result.setEnergyCapacity(cc.getEnergyCapacity()+total);
+                result.setMoneyCapacity(cc.getMoneyCapacity()+total);
+                result.setRawMaterialsCapacity(cc.getRawMaterialsCapacity()+total);
+                return result;
+            }else{
+                userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "Recursos insuficientes");
+            return cc;
+            }
+                
+        }else{
+            return cc;
+        }
+       
+    }
+
 }

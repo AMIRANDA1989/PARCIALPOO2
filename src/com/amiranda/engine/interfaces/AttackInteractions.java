@@ -5,6 +5,7 @@
  */
 package com.amiranda.engine.interfaces;
 
+import com.amiranda.parcial2.classes.core.AttackCommand;
 import com.amiranda.parcial2.classes.core.Player;
 import com.amiranda.parcial2.classes.functional.units.HeavyVehicle;
 import com.amiranda.parcial2.classes.functional.units.LightVehicle;
@@ -36,4 +37,10 @@ public interface AttackInteractions {
    public ArrayList<LightVehicle> deployLAV2(ArrayList<LightVehicle> units, int qty);
    public ArrayList<HeavyVehicle> deployHeavy1(ArrayList<HeavyVehicle> units, int qty);
    public ArrayList<HeavyVehicle> deployHeavy2(ArrayList<HeavyVehicle> units, int qty);
+   
+   public ArrayList<AttackCommand> setAttackRemainingTurns(ArrayList<AttackCommand> commands);
+   public Player runInvasionPhase(ArrayList<AttackCommand> commands, Player target);
+   
+   /*Resolviendo ataque exitoso*/
+   public boolean attackSuccessful(int successRate);
 }

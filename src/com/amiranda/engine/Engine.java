@@ -315,7 +315,7 @@ public class Engine {
          */
         while (RUNNING) {
             try {
-                
+
                 /*
                 FASE INICIAL
                 La fase inicial consta en realizar las validaciones generales del
@@ -353,6 +353,12 @@ public class Engine {
                     La fase de mantenimiento inicial consta de validar el estado de las construcciones del jugador,
                     que sus edificios de produccion generen recursos y que sus bases militares produzcan unidades
                      */
+                    if (TURNO == 0) {
+                        jugadorInactivo = 1;
+                    } else {
+                        jugadorInactivo = 0;
+                    }
+
                     System.out.println("");
                     System.out.println("");
                     //Validando la construccion de fabricas
@@ -386,14 +392,20 @@ public class Engine {
                     //Validando la construccion de unidades
                     activePlayer.setSquads(unitInteraction.squadQueueProduction(activePlayer.getSquadConstruction(), activePlayer.getSquads(), activePlayer.getPlayerBaseSquad()));
                     activePlayer.setSpecialist(unitInteraction.specialistQueueProduction(activePlayer.getSpecialistConstruction(), activePlayer.getSpecialist(), activePlayer.getPlayerBaseSpecialist()));
+                    activePlayer.setLAVs(unitInteraction.lavQueueProduction(activePlayer.getLAVConstruction(), activePlayer.getLAVs(), activePlayer.getPlayerBaseLAV()));
+                    activePlayer.setHeavies(unitInteraction.heavyQueueProduction(activePlayer.getHeavyConstruction(), activePlayer.getHeavies(), activePlayer.getPlayerBaseHeavy()));
 
                     //Limpiando las unidades pendientes
                     activePlayer.setSquadConstruction(unitInteraction.squadCleanQueue(activePlayer.getSquadConstruction()));
                     activePlayer.setSpecialistConstruction(unitInteraction.specialistCleanQueue(activePlayer.getSpecialistConstruction()));
+                    activePlayer.setLAVConstruction(unitInteraction.lavCleanQueue(activePlayer.getLAVConstruction()));
+                    activePlayer.setLAVConstruction(unitInteraction.lavCleanQueue(activePlayer.getLAVConstruction()));
 
                     //validando la vida de las unidades activas
                     activePlayer.setSquads(unitInteraction.squadMaintenance(activePlayer.getSquads()));
                     activePlayer.setSpecialist(unitInteraction.specialistQueueMaintenance(activePlayer.getSpecialist()));
+                    activePlayer.setLAVs(unitInteraction.lavMaintenance(activePlayer.getLAVs()));
+                    activePlayer.setHeavies(unitInteraction.heavyQueueMaintenance(activePlayer.getHeavies()));
 
                     /*FASE DE GENERACION DE RECURSOS
                     Esta es la parte en la que los recursos se generan para llenarse en los edificios correspondientes
@@ -405,13 +417,19 @@ public class Engine {
                     //Llenando Minas
                     activePlayer.setMines(buildingInteraction.powerMineFillResources(activePlayer.getMines()));
 
-
+                    /*FASE DE INVASION
+                    Es donde se resuelven todos los ataques pendientes y tambien se da mantenimiento a los ataques que estan por
+                    llegarle al jugador
+                     */
+                    activePlayer.setAttackCommands(this.attackInteraction.setAttackRemainingTurns(activePlayer.getAttackCommands()));
+                    activePlayer = this.attackInteraction.runInvasionPhase(this.players.get(jugadorInactivo).getAttackCommands(), activePlayer) ;
+                    
                     /* FASE PRINCIPAL DEL JUGADOR
                     la fase principal es donde el jugador toma todas las decisiones que
                     afectaran a su turno y los turnos siguientes
                     aqui es donde puede construir, recolectar, entrenar soldado
                     y dar ordenes de ataque
-                     */
+                             */
                     while (menu) {
                         switch (this.userInteraction.mainMenu(activePlayer)) {
                             case 0: //Revisando recursos
@@ -439,11 +457,7 @@ public class Engine {
                                 break;
 
                             case 6://Preparar ataque a oponente
-                                if (TURNO == 0) {
-                                    jugadorInactivo = 1;
-                                } else {
-                                    jugadorInactivo = 0;
-                                }
+
                                 activePlayer = this.attackInteraction.attackOperations(activePlayer, this.players.get(jugadorInactivo));
                                 break;
 
@@ -452,6 +466,10 @@ public class Engine {
                                 break;
 
                             case 8:
+                                activePlayer = this.buildingInteraction.ccOperations(activePlayer);
+                                break;
+                                
+                            case 9:
                                 menu = false;
                                 break;
 
@@ -472,13 +490,15 @@ public class Engine {
                     //realizando pasos de construccion de unidades que estan en cola
                     this.players.get(TURNO).setSquadConstruction(this.unitInteraction.squadQueueMaintenance(activePlayer.getSquadConstruction()));
                     this.players.get(TURNO).setSpecialistConstruction(this.unitInteraction.specialistQueueMaintenance(activePlayer.getSpecialistConstruction()));
+                    this.players.get(TURNO).setLAVConstruction(this.unitInteraction.lavQueueMaintenance(activePlayer.getLAVConstruction()));
+                    this.players.get(TURNO).setHeavyConstruction(this.unitInteraction.heavyQueueMaintenance(activePlayer.getHeavyConstruction()));
 
                     //validando la vida de las unidades desplegadas
                     activePlayer.setSquads(unitInteraction.squadMaintenance(activePlayer.getDeployedSquads()));
                     activePlayer.setSpecialist(unitInteraction.specialistQueueMaintenance(activePlayer.getDeployedSpecialist()));
 
                     //Realizando ajustes a la capacidad actual de unidades
-                    this.players.get(TURNO).getCc().setUnitCapacity(this.buildingInteraction.militaryBaseCurrentCapacity(this.players.get(TURNO).getMbs(), (this.players.get(TURNO).getSquads().size() + this.players.get(TURNO).getSpecialist().size()), (this.players.get(TURNO).getDeployedSquads().size() + this.players.get(TURNO).getDeployedSpecialist().size())));
+                    this.players.get(TURNO).getCc().setUnitCapacity(this.buildingInteraction.militaryBaseCurrentCapacity(this.players.get(TURNO).getMbs(), (this.players.get(TURNO).getSquads().size() + this.players.get(TURNO).getSpecialist().size() + this.players.get(TURNO).getLAVs().size() + this.players.get(TURNO).getHeavies().size()), 0));
 
                     //Realizando ajustes finales para iniciar un nuevo turno
                     menu = true;
@@ -492,7 +512,7 @@ public class Engine {
                 this.RONDA++;
             } catch (Exception e) {
                 this.userInteraction.showMessage(UserInteractions.ERROR_MESSAGE, e.getMessage());
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
 

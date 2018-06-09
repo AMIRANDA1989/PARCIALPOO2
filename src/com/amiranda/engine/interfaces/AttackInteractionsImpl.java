@@ -7,12 +7,17 @@ package com.amiranda.engine.interfaces;
 
 import com.amiranda.parcial2.classes.core.AttackCommand;
 import com.amiranda.parcial2.classes.core.Player;
+import com.amiranda.parcial2.classes.functional.buildings.ComandCenter;
+import com.amiranda.parcial2.classes.functional.buildings.Factory;
+import com.amiranda.parcial2.classes.functional.buildings.Market;
+import com.amiranda.parcial2.classes.functional.buildings.PowerMine;
 import com.amiranda.parcial2.classes.functional.units.HeavyVehicle;
 import com.amiranda.parcial2.classes.functional.units.LightVehicle;
 import com.amiranda.parcial2.classes.functional.units.Specialist;
 import com.amiranda.parcial2.classes.functional.units.Squad;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -40,6 +45,8 @@ public class AttackInteractionsImpl implements AttackInteractions {
         ArrayList<LightVehicle> attLAVs = new ArrayList();
         ArrayList<HeavyVehicle> attHeavies = new ArrayList();
 
+        ArrayList<AttackCommand> attCommands = new ArrayList();
+
         AttackCommand command = new AttackCommand();
 
         switch (userInteractions.attPhase1Menu()) {
@@ -60,7 +67,15 @@ public class AttackInteractionsImpl implements AttackInteractions {
                 }
                 break;
 
-            case 3: //atacar minas del enemigo
+            case 3: //atacar mercados del enemigo
+                if (targetPlayer.getMarkets().isEmpty()) {
+                    userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "Tu oponente no tiene minas en pie!");
+                } else {
+                    targetBuilding = AttackInteractions.MARKET;
+                }
+                break;
+
+            case 4: //atacar minas del enemigo
                 if (targetPlayer.getMines().isEmpty()) {
                     userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "Tu oponente no tiene minas en pie!");
                 } else {
@@ -68,12 +83,16 @@ public class AttackInteractionsImpl implements AttackInteractions {
                 }
                 break;
 
-            case 4: //atacar bases militares del enemigo
+            case 5: //atacar bases militares del enemigo
                 if (targetPlayer.getMbs().isEmpty()) {
                     userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "Tu oponente no tiene bases militares en pie!");
                 } else {
                     targetBuilding = AttackInteractions.MILITARY_BUILDING;
                 }
+                break;
+
+            case 6: //atacar bases militares del enemigo
+                targetBuilding = AttackInteractions.CANCEL_ATTACK;
                 break;
 
             default:
@@ -101,7 +120,7 @@ public class AttackInteractionsImpl implements AttackInteractions {
                         break;
 
                     case 2: //usar especialista para atacar
-                        if (attPlayer.getSquads().isEmpty()) {
+                        if (attPlayer.getSpecialist().isEmpty()) {
                             userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No tienes especialistas disponibles!");
                         } else {
                             attackingUnits = userInteractions.pickAttackingUnits(attPlayer.getSpecialist().size());
@@ -112,9 +131,9 @@ public class AttackInteractionsImpl implements AttackInteractions {
                             }
                         }
                         break;
-                        
+
                     case 3: //usar LAV para atacar
-                        if (attPlayer.getSquads().isEmpty()) {
+                        if (attPlayer.getLAVs().isEmpty()) {
                             userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No tienes vehiculos livianos disponibles!");
                         } else {
                             attackingUnits = userInteractions.pickAttackingUnits(attPlayer.getLAVs().size());
@@ -125,9 +144,9 @@ public class AttackInteractionsImpl implements AttackInteractions {
                             }
                         }
                         break;
-                        
+
                     case 4: //usar Heavy para atacar
-                        if (attPlayer.getSquads().isEmpty()) {
+                        if (attPlayer.getHeavies().isEmpty()) {
                             userInteractions.showMessage(UserInteractions.ERROR_MESSAGE, "No tienes vehiculos pesados disponibles!");
                         } else {
                             attackingUnits = userInteractions.pickAttackingUnits(attPlayer.getHeavies().size());
@@ -138,35 +157,37 @@ public class AttackInteractionsImpl implements AttackInteractions {
                             }
                         }
                         break;
-                        
+
                     case 5: //confirmar ataque
                         System.out.print("Confirmar y proceder con el ataque?");
-                        if(userInteractions.confirmAction()){
+                        if (userInteractions.confirmAction()) {
                             command.setTarget(targetBuilding);
                             command.setDeployedSquads(attSquads);
                             command.setDeployedLAV(attLAVs);
                             command.setDeployedHeavy(attHeavies);
-                            
+
                             attPlayer.setSquads(remainingSquads);
                             attPlayer.setSpecialist(remainingSpecialist);
                             attPlayer.setLAVs(remainingLAVs);
                             attPlayer.setHeavies(remainingHeavies);
-                            attPlayer.getAttackCommands().add(command);
-                            
+
+                            attCommands.add(command);
+                            attPlayer.setAttackCommands(attCommands);
+
                             userInteractions.showMessage(UserInteractions.WARNING_MESSAGE, "El ataque tendrá efecto en 2 turnos");
                             return attPlayer;
-                        }else{
+                        } else {
                             userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Orden Cancelada");
                             return attackingPlayer;
                         }
-                        
+
                     case 6:
                         userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Orden Cancelada");
                         return attackingPlayer;
-                        
+
                 }
             }
-        }else{
+        } else {
             userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Orden Cancelada");
             return attackingPlayer;
         }
@@ -295,6 +316,165 @@ public class AttackInteractionsImpl implements AttackInteractions {
         }
 
         return result;
+    }
+
+    @Override
+    public ArrayList<AttackCommand> setAttackRemainingTurns(ArrayList<AttackCommand> commands) {
+        ArrayList<AttackCommand> result = new ArrayList();
+        for (AttackCommand a : commands) {
+            a.setAttackTime(a.getAttackTime() - 1);
+            result.add(a);
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * @param commands
+     * @param target
+     * @return el jugador objetivo luego de recibir daño
+     */
+    @Override
+    public Player runInvasionPhase(ArrayList<AttackCommand> commands, Player target) {
+        int squadDamage = 0;
+        int specialistDamage = 0;
+        int LAVDamage = 0;
+        int heavyDamage = 0;
+        int totalDamage = 0;
+
+        Player result = target;
+        //ComandCenter newCC = target.getCc();
+
+        String building = "";
+
+        for (AttackCommand a : commands) {
+            if (a.getAttackTime() == 0) {
+                switch (a.getTarget()) {
+                    case AttackInteractions.COMMAND_CENTER:
+                        building = "Centro de control";
+                        break;
+                    case AttackInteractions.FACTORY:
+                        building = target.getPlayerBaseFactory().getName();
+                        break;
+                    case AttackInteractions.MARKET:
+                        building = target.getPlayerBaseMarket().getName();
+                        break;
+                    case AttackInteractions.POWER_MINE:
+                        building = target.getPlayerBasePowerMine().getName();
+                        break;
+                    case AttackInteractions.MILITARY_BUILDING:
+                        building = target.getPlayerBaseMilitaryBuilding().getName();
+                        break;
+                }
+
+                //procesando los escuadrones
+                for (Squad s : a.getDeployedSquads()) {
+                    //Solo las unidades con vida pueden atacar
+                    if (s.getHitpoints() > 0) {
+                        if (attackSuccessful(s.getSuccessRate())) {
+                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un " + building);
+                            squadDamage = squadDamage + s.getAttackPoints();
+                        } else {
+                            userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de atacar al " + building);
+                        }
+
+                    }
+                }
+
+                //procesando los especialistas
+                for (Specialist s : a.getDeployedSpecialist()) {
+                    if (attackSuccessful(s.getSuccessRate())) {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un" + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un " + building);
+                        specialistDamage = specialistDamage + s.getAttackPoints();
+                    } else {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de atacar al " + building);
+                    }
+                }
+
+                //procesando los vehiculos livianos
+                for (LightVehicle s : a.getDeployedLAV()) {
+                    if (attackSuccessful(s.getSuccessRate())) {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un" + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un " + building);
+                        LAVDamage = LAVDamage + s.getAttackPoints();
+                    } else {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de atacar al " + building);
+                    }
+                }
+
+                //procesando los vehiculos pesados
+                for (HeavyVehicle s : a.getDeployedHeavy()) {
+                    if (attackSuccessful(s.getSuccessRate())) {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un" + s.getName() + "ha hecho " + s.getAttackPoints() + " de daño a un " + building);
+                        heavyDamage = heavyDamage + s.getAttackPoints();
+                    } else {
+                        userInteractions.showMessage(UserInteractions.INFO_MESSAGE, "Un " + s.getName() + "fallo al momento de atacar al " + building);
+                    }
+                }
+
+                //una vez procesados los ataques se obtiene el daño total
+                totalDamage = squadDamage + specialistDamage + LAVDamage + heavyDamage;
+
+                int tmpDamage = 0; //sirve para saber si no ha sobrado daño despues de un ataque
+
+                //Procesando el daño por hacer
+                switch (a.getTarget()) {
+                    case AttackInteractions.COMMAND_CENTER:
+                        result.getCc().setHitpoints(result.getCc().getHitpoints() - totalDamage);
+                        break;
+                    case AttackInteractions.FACTORY:
+                        for (Factory b : result.getFactories()) {
+                            if (totalDamage >= 0) {
+                                tmpDamage = b.getHitpoints() - totalDamage;
+                                b.setHitpoints(b.getHitpoints() - totalDamage);
+
+                                if (tmpDamage < 0) {
+                                    totalDamage = tmpDamage * (-1);
+                                }
+                            }
+                        }
+                        break;
+                    case AttackInteractions.MARKET:
+                        for (Market b : result.getMarkets()) {
+                            if (totalDamage >= 0) {
+                                tmpDamage = b.getHitpoints() - totalDamage;
+                                b.setHitpoints(b.getHitpoints() - totalDamage);
+
+                                if (tmpDamage < 0) {
+                                    totalDamage = tmpDamage * (-1);
+                                }
+                            }
+                        }
+                        break;
+                    case AttackInteractions.POWER_MINE:
+                        for (PowerMine b : result.getMines()) {
+                            if (totalDamage >= 0) {
+                                tmpDamage = b.getHitpoints() - totalDamage;
+                                b.setHitpoints(b.getHitpoints() - totalDamage);
+
+                                if (tmpDamage < 0) {
+                                    totalDamage = tmpDamage * (-1);
+                                }
+                            }
+                        }
+                        break;
+                    case AttackInteractions.MILITARY_BUILDING:
+                        building = target.getPlayerBaseMilitaryBuilding().getName();
+                        break;
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean attackSuccessful(int successRate) {
+        int chance = ThreadLocalRandom.current().nextInt(1, 100 + 1);
+        if (chance > successRate) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

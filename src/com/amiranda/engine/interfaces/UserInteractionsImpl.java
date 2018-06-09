@@ -127,7 +127,8 @@ public class UserInteractionsImpl implements UserInteractions {
             System.out.println("5 - Entrenar unidades.");
             System.out.println("6 - Atacar a mi oponente.");
             System.out.println("7 - Defender mi base.");
-            System.out.println("8 - Finalizar mi turno.");
+            System.out.println("8 - Administrar mi Centro de Mando");
+            System.out.println("9 - Finalizar mi turno.");
 
             System.out.print("Accion a realizar: ");
             option = in.nextLine();
@@ -158,7 +159,11 @@ public class UserInteractionsImpl implements UserInteractions {
                     return 7;
 
                 case "8":
-                    return 7;
+                    return 8;
+                    
+                case "9":
+                    return 9;
+
 
                 default:
                     this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
@@ -498,8 +503,9 @@ public class UserInteractionsImpl implements UserInteractions {
             System.out.println("1 - Atacar Centro de Mando enemigo.");
             System.out.println("2 - Atacar Fabricas del enemigo.");
             System.out.println("3 - Atacar Mercados del enemigo.");
-            System.out.println("4 - Atacar Bases Militares del enemigo.");
-            System.out.println("5 - Cancelar y volver a menu principal.");
+            System.out.println("4 - Atacar Minas del enemigo.");
+            System.out.println("5 - Atacar Bases Militares del enemigo.");
+            System.out.println("6 - Cancelar y volver a menu principal.");
 
             System.out.print("Accion a realizar: ");
             option = in.nextLine();
@@ -522,6 +528,9 @@ public class UserInteractionsImpl implements UserInteractions {
                     
                 case "5":
                     return 5;
+                    
+                case "6":
+                    return 6;
 
                 default:
                     this.showMessage(UserInteractions.ERROR_MESSAGE, "Ingrese una opcion valida por favor");
@@ -595,6 +604,49 @@ public class UserInteractionsImpl implements UserInteractions {
         }else{
             return Integer.parseInt(option);
         }
+    }
+
+    @Override
+    public int ccMenu() {
+        boolean validator = true;
+        String option;
+        int result = 0;
+
+        while (validator) {
+            System.out.println("");
+            System.out.println("------------------------------------");
+            System.out.println("ADMINISTRACION DEL CENTRO DE CONTROL");
+            System.out.println("Elige una accion (ingresa el numero)");
+            System.out.println("1 - Ver estado de mi Centro de Control");
+            System.out.println("2 - Mejorar mi centro de Control");
+            System.out.println("3 - Regresar");
+
+            System.out.print("Accion a realizar: ");
+            option = in.nextLine();
+
+            switch (option) {
+                case "1":
+                    result = 1;
+                    validator = false;
+                    break;
+
+                case "2":
+                    result = 2;
+                    validator = false;
+                    break;
+
+                case "3":
+                    result = 3;
+                    validator = false;
+                    break;
+
+                default:
+                    System.out.println("Por favor, ingrese un número valido");
+                    break;
+            }
+        }
+
+        return result;
     }
 
 }

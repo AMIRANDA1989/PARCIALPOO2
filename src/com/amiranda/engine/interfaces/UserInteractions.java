@@ -51,4 +51,6 @@ public interface UserInteractions {
     public int defineAttackMenu();
     
     public int defendMenu();
+    
+    public int ccMenu();
 }

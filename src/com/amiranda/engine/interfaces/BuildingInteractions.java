@@ -6,6 +6,7 @@
 package com.amiranda.engine.interfaces;
 
 import com.amiranda.parcial2.classes.core.Player;
+import com.amiranda.parcial2.classes.functional.buildings.ComandCenter;
 import com.amiranda.parcial2.classes.functional.buildings.Factory;
 import com.amiranda.parcial2.classes.functional.buildings.Market;
 import com.amiranda.parcial2.classes.functional.buildings.MilitaryBuilding;
@@ -66,4 +67,7 @@ public interface BuildingInteractions {
     public ArrayList<Market> marketFillResources(ArrayList<Market> buildings);
     public ArrayList<PowerMine> powerMineFillResources(ArrayList<PowerMine> buildings);
     
+    //metodos para el centro de control
+    public Player ccOperations(Player activePlayer);
+    public ComandCenter upgradeCC(ComandCenter cc);
 }
