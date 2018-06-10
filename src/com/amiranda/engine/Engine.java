@@ -308,6 +308,7 @@ public class Engine {
         setupPlayers();
         int HPP1CC, HPP2CC, jugadorInactivo, espacioUnidades;
         boolean menu = true;
+        boolean defended = false;
         /* FIN FASE DE CONFIGURACION*/
         ///////////////////////////////////////////////////////////////////////
         /*
@@ -359,6 +360,8 @@ public class Engine {
                         jugadorInactivo = 0;
                     }
                      //vlidando vida
+                     
+                    defended = false;
                      
                     if(activePlayer.getCc().getHitpoints() <= 0){
                         System.out.println("EL JUGADOR " + jugadorInactivo +" HA SALIDO VICTORIOSO");
@@ -478,7 +481,12 @@ public class Engine {
                                 break;
 
                             case 7: //defender la base
-                                this.players.get(jugadorInactivo).setAttackCommands(attackInteraction.resistAttack(activePlayer, this.players.get(jugadorInactivo).getAttackCommands()));
+                                if(!(defended)){
+                                    this.players.get(jugadorInactivo).setAttackCommands(attackInteraction.resistAttack(activePlayer, this.players.get(jugadorInactivo).getAttackCommands()));
+                                    defended = true;
+                                }else{
+                                    userInteraction.showMessage(UserInteractions.ERROR_MESSAGE, "Ya defendiste a tu base por este turno");
+                                }
                                 break;
 
                             case 8:
